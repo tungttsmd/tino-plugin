@@ -12,7 +12,6 @@ if (!defined('ABSPATH')) {
     exit; // Ngăn truy cập trực tiếp
 }
 
-
 add_action('init', function () {
     require_once plugin_dir_path(__FILE__) . 'plugin_function/function.php';
 });
