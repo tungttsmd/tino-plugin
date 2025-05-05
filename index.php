@@ -16,5 +16,6 @@ if (!defined('ABSPATH')) {
 add_action('init', function () {
     require_once plugin_dir_path(__FILE__) . 'plugin_function/function.php';
 });
+
 add_shortcode('webo_bang_gia', 'shortcode_BangGia');
 add_shortcode('webo_dang_ky', 'shortcode_DangKy');

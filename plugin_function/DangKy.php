@@ -55,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_GET['invoice_id'])) {
             $msg = 'Cấu hình thông tin đăng nhập không đúng, vui lòng sửa lại trong config.php!';
         }
 
-
         if ($flag) {
             # Tạo đối tượng Domain
             $dangkytenmien = new Domain($dangnhap->getToken());
@@ -158,8 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_GET['invoice_id'])) {
     $flag = false;
     $msg = 'Lỗi server: timeout (order_status)';
     for ($i = 0; $i < 2; $i++) {
-        # Dừng khoảng chừng là 2 giây ... chia 2 :)) tránh spam request, server nghỉ chơi thì mệt
-        sleep(1);
+        # Dừng khoảng chừng là 0.1 giây ... 2 lần :)) tránh spam request, server nghỉ chơi thì mệt
+        sleep(0.1);
         # Nếu không tồn tại phản hồi thì $flag cứ false
         if (isset($order_status->response) && $order_status->response) {
             $flag = true;
@@ -179,8 +178,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_GET['invoice_id'])) {
         $flag = false;
         $msg = 'Lỗi server: timeout (invoice_id)';
         for ($i = 0; $i < 2; $i++) {
-            # Dừng khoảng chừng là 2 giây ... chia 2 :)) tránh spam request, server nghỉ chơi thì mệt
-            sleep(1);
+            # Dừng khoảng chừng là 0.1 giây ... chia 2 :)) tránh spam request, server nghỉ chơi thì mệt
+            sleep(0.1);
             # Lấy $invoice_id với domain name để scan
             $order_invoice_id = get_order_invoice_id_by_comparing_scan($hoadon, $orderID_by_domain_name);
             # Nếu không dò được nó trả null. Nếu dò được trả invoice_id -> thì order thì lấy luôn hoá đơn. 
@@ -192,8 +191,54 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_GET['invoice_id'])) {
         }
 
         if ($flag) {
-            # Tới đây thì đã có $order_invoice_id => điều hướng GET tới trang xem hoá đơn thành công
-            wp_redirect(add_query_arg('invoice_id', $order_invoice_id, esc_url($_SERVER['REQUEST_URI'])));
+
+            /* START DEBUG */
+            // Tới đây thì đã có $order_invoice_id => điều hướng GET tới trang xem hoá đơn thành công
+            echo '<br><div><b>A. Kiểm tra hệ thống: </b></div>';
+            if (headers_sent($file, $line)) {
+                echo '<div style="color: red;"><strong>1. Lỗi Header đã bị gửi trước khi chạy wp_redirect (hiếm khi) Headersmessage: already sent at ' . $file . ':' . $line . '</strong></div>';
+            } else {
+                echo '<div style="color: green;"><strong>1. Không có lỗi headers_sent OK </strong></div>';
+            }
+
+            echo '<div>2. Kiểm tra có $order_invoice_id hoá đơn không: <strong>' . ('<span style="color: green">có hoá đơn - ' . $order_invoice_id . ' OK </span>' ?? '<span style="color: red">lỗi không có hoá đơn - Fatal error do !isset()!!!</span>') . '</strong></div>';
+            echo '<div>3. Kiểm tra có buffering không (> 0 là có): <strong>' . (ob_get_level() > 0 ? '<span style="color: green">Buffering có bật (= ' . ob_get_level() . ') , có thể fix nếu có lỗi headers_sent() OK</span>' : '<span style="color: red;">Buffering tắt, có thể lỗi ở đây nếu headers_sent() có lỗi</span>') . '</strong></div>';
+
+            echo '<br><div><b>B. Lệnh wp_redirect() cũ: </b></div>';
+
+            $old_wp_redirect_url = add_query_arg('invoice_id', $order_invoice_id, esc_url($_SERVER['REQUEST_URI']));
+            echo '<div>4.0. Lệnh cũ: <b>wp_redirect(add_query_arg("invoice_id", $order_invoice_id, esc_url($_SERVER["REQUEST_URI"])))</b>';
+            echo '<div>4.1. Đường dẫn cũ <span style="color: red">không chạy được khi đem từ local lên production</span>: <strong>' . $old_wp_redirect_url . '</strong></div>';
+            echo '<div><small>Note: Khả năng đường dẫn dạng tương đối, đã gây fatal error trong multi-site (production)</small></div>';
+
+            echo '<br><div><b>C. Kiểm tra đường dẫn hợp lệ:</b></div>';
+            echo '<div>5. Đường dẫn không hợp lệ (đường dẫn cũ): <b>' . $old_wp_redirect_url . '</b></div>';
+
+            $request_uri = untrailingslashit($_SERVER['REQUEST_URI']);
+            echo '<div>6. Giá trị untrailingslashit($_SERVER["request_uri"]): <strong>' . $request_uri . '</strong></div>';
+
+            $site_url = site_url($request_uri);
+            echo '<div>7.1. Giá trị site_url(): <strong>' . $site_url . '</strong></div>';
+
+            $home_url = home_url($request_uri);
+            echo '<div>7.2. Giá trị home_url(): <strong>' . $home_url . '</strong></div>';
+
+            $site_esc_url = esc_url($site_url);
+            echo '<div>8.1. Giá trị esc_url(site_url()): <strong>' . $site_esc_url . '</strong></div>';
+
+            $home_esc_url = esc_url($home_url);
+            echo '<div>8.2. Giá trị esc_url(home_url()): <strong>' . $home_esc_url . '</strong></div>';
+
+            $abs_site_url = add_query_arg('invoice_id', $order_invoice_id, $site_esc_url);
+            echo '<div>9.1. Giá trị đường dẫn tuyệt đối với add_query_arg() và esc_url(site_url()): <strong>' . $abs_site_url . '</strong></div>';
+
+            $abs_home_url = add_query_arg('invoice_id', $order_invoice_id, $home_esc_url);
+            echo '<div>9.2. Giá trị đường dẫn tuyệt đối với add_query_arg() và esc_url(home_url()): <strong>' . $abs_home_url . '</strong></div>';
+
+            /* END DEBUG */
+
+            # URL cũ chạy không được trên webo.vn
+            // wp_redirect(add_query_arg('invoice_id', $order_invoice_id, esc_url($_SERVER['REQUEST_URI'])));
             exit;
 
             # Kết thúc luồng thành công
