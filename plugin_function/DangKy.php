@@ -157,8 +157,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_GET['invoice_id'])) {
     $flag = false;
     $msg = 'Lỗi server: timeout (order_status)';
     for ($i = 0; $i < 2; $i++) {
+<<<<<<< HEAD
         # Dừng khoảng chừng là 0.1 giây ... 2 lần :)) tránh spam request, server nghỉ chơi thì mệt
         sleep(0.1);
+=======
+        # Dừng khoảng chừng là 0.3 giây ... :)) tránh spam request, server nghỉ chơi thì mệt
+        sleep(0.15);
+>>>>>>> test-v123
         # Nếu không tồn tại phản hồi thì $flag cứ false
         if (isset($order_status->response) && $order_status->response) {
             $flag = true;
@@ -178,8 +183,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_GET['invoice_id'])) {
         $flag = false;
         $msg = 'Lỗi server: timeout (invoice_id)';
         for ($i = 0; $i < 2; $i++) {
+<<<<<<< HEAD
             # Dừng khoảng chừng là 0.1 giây ... chia 2 :)) tránh spam request, server nghỉ chơi thì mệt
             sleep(0.1);
+=======
+            # Dừng khoảng chừng là 0.3 giây ...  :)) tránh spam request, server nghỉ chơi thì mệt
+            sleep(0.15);
+>>>>>>> test-v123
             # Lấy $invoice_id với domain name để scan
             $order_invoice_id = get_order_invoice_id_by_comparing_scan($hoadon, $orderID_by_domain_name);
             # Nếu không dò được nó trả null. Nếu dò được trả invoice_id -> thì order thì lấy luôn hoá đơn. 
