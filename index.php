@@ -16,4 +16,4 @@ add_action('init', function () {
 });
 
 add_shortcode('bang_gia', 'shortcode_BangGia');
-add_shortcode('webo_dang_ky', 'shortcode_DangKy');
+add_shortcode('dang_ky', 'shortcode_DangKy');
