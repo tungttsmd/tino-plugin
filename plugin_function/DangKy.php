@@ -22,15 +22,18 @@ $_POST['auth'] = $auth; # Dữ liệu cấu hình đăng nhập
 $_POST['widget'] = ''; # Lưu trữ dữ liệu dùng cho widget
 
 # Core 4: Xử lí dữ liệu (debug trong này thoải mái) (chuẩn PRG (Post → Redirect → Get))
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_GET['invoice_id'])) {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     # Truyền dữ liệu cho widget xử lí (mỗi lần bấm submit là mất sạch $_POST, phải gán lại trước)
     $_POST['widget'] = $widget_data = betterStd(['data' => ['domain' => trim($_POST['domain'] ?? ''), 'nameservers' => $nameservers,], 'login' => (array) $auth]);
 
     # Nhúng form order
     orderNew_form();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['button'] === 'orderOther')) {
-    wp_redirect(esc_url(add_query_arg('reloaded', time(), $_SERVER['REQUEST_URI'])));
-    exit;
+    # Truyền dữ liệu cho widget xử lí (mỗi lần bấm submit là mất sạch $_POST, phải gán lại trước)
+    $_POST['widget'] = $widget_data = betterStd(['data' => ['domain' => trim($_POST['domain'] ?? ''), 'nameservers' => $nameservers,], 'login' => (array) $auth]);
+
+    # Nhúng form order
+    orderNew_form();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['button'] === 'orderNew')) {
     debug_0();
     # Truyền dữ liệu cho widget xử lí (mỗi lần bấm submit là mất sạch $_POST, phải gán lại trước)
@@ -191,11 +194,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_GET['invoice_id'])) {
         }
 
         if ($flag) {
-            // Tới đây thì đã có $order_invoice_id => điều hướng GET tới trang xem hoá đơn thành công
-            wp_redirect(add_query_arg('invoice_id', $order_invoice_id, esc_url($_SERVER['REQUEST_URI'])));
-            exit;
+            # Vẽ hoá đơn
+            draw_invoice($hoadon, $order_invoice_id);
 
-            # Kết thúc luồng thành công
+            # Kết thúc luồng: orderConfirm
         } else {
             # Nhúng form order
             orderNew_form();
@@ -229,16 +231,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_GET['invoice_id'])) {
     # Lấy $invoice_id
     $order_invoice_id = get_order_invoice_id_by_comparing_scan($hoadon, $orderID_by_domain_name);
 
-    # Điều hướng trang với query string =  $invoice_id
-    wp_redirect(add_query_arg('invoice_id', $order_invoice_id, esc_url($_SERVER['REQUEST_URI'])));
-    exit;
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['invoice_id'])) {
-    # Truyền dữ liệu cho widget xử lí (mỗi lần bấm submit là mất sạch $_POST, phải gán lại trước)
-    $_POST['widget'] = $widget_data = betterStd(['data' => ['domain' => trim($_POST['domain'] ?? ''), 'nameservers' => $nameservers,], 'login' => (array) $auth]);
+    # Vẽ hoá đơn
+    draw_invoice($hoadon, $order_invoice_id);
 
-    # Tạo đối tượng hoá đơn
-    $dangnhap = new Login($auth->username, $auth->password);
-    $hoadon = new Invoice($dangnhap->getToken());
-    # Đưa dữ liệu cho GET (để người dùng reload thoải mái)
-    draw_invoice($hoadon, $_GET['invoice_id']);
+    # Kết thúc luồng: orderPayment
 }

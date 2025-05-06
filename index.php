@@ -1,5 +1,5 @@
 <?php
-
+echo 'h222i';
 /**
  * Plugin Name: Tino plugin
  * Description: Dùng shortcode [bang_gia] để lấy bảng giá tên miền; [dang_ky] để lấy form đăng ký tên miền
