@@ -1,5 +1,4 @@
 <?php
-echo 'h222i';
 /**
  * Plugin Name: Tino plugin
  * Description: Dùng shortcode [bang_gia] để lấy bảng giá tên miền; [dang_ky] để lấy form đăng ký tên miền
@@ -16,5 +15,5 @@ add_action('init', function () {
     require_once plugin_dir_path(__FILE__) . 'plugin_function/function.php';
 });
 
-add_shortcode('webo_bang_gia', 'shortcode_BangGia');
+add_shortcode('bang_gia', 'shortcode_BangGia');
 add_shortcode('webo_dang_ky', 'shortcode_DangKy');
