@@ -1,7 +1,7 @@
 <?php
 # Core 0: Load file cấu hình
-require_once(dirname(plugin_dir_path(__FILE__)) . '/system/autoload.php');
-require_once(dirname(plugin_dir_path(__FILE__)) . '/config.php');
+require (dirname(plugin_dir_path(__FILE__)) . '/system/autoload.php');
+require (dirname(plugin_dir_path(__FILE__)) . '/config.php');
 
 # Core 1: Khởi tạo cờ (Mở debug = cách thêm query String ?debug ở thanh nhập URL)
 $flag = true; # khởi tạo flag

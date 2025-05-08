@@ -1,5 +1,8 @@
 Chi tiết các cập nhật tino_plugin
 
+08.05.2025: 1.2.8
+- Đưa mọi include_once, require_once sang require. (file BangGia.php, DangKy.php, index.php) để dễ tìm debug ngay từ đầu
+
 08.05.2025: 1.2.7 
 - Sửa lỗi khi đặt 2 shortcode webo_dang_ky và webo_bang_gia chung một trang. Lệnh require_once ở file BangGia đã không include lại config -> mất biến số
 - Đổi shortcode dang_ky, bang_gia -> [webo_dang_ky] và [webo_bang_gia]
