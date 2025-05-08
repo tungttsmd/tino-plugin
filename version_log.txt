@@ -1,0 +1,15 @@
+Chi tiết các cập nhật tino_plugin
+
+08.05.2025: 1.2.7 
+- Sửa lỗi khi đặt 2 shortcode webo_dang_ky và webo_bang_gia chung một trang. Lệnh require_once ở file BangGia đã không include lại config -> mất biến số
+- Đổi shortcode dang_ky, bang_gia -> [webo_dang_ky] và [webo_bang_gia]
+- Có thể truy cập source code mới nhất này trên https://github.com/tungttsmd/tino-plugin
+
+07.05.2025: 1.2.6
+- Sửa lỗi dùng wp_redirect() trong DangKy.php. Đã khắc phục lỗi header_sent(), không sử dụng wp_redirect() mà chuyển qua vẽ trực tiếp nội dung luôn.
+
+06.05.2025: 1.2.5
+- Sửa lỗi đường dẫn do betterPath() trong lib.php đã chuyển dấu nối "\" -> gây lỗi trong hệ thống hosting nghiêm ngặt về đường dẫn. Đổi qua "/" hết.
+
+05.05.2025: 1.2.4
+- Hoàn thành test trên local, thử nghiệm đưa lên hosting.
