@@ -77,3 +77,45 @@ function betterDebug($value = 'exit only')
     var_dump($value);
     exit;
 }
+
+
+
+# mvchref
+function mvchref(string $controller, string $action, string $mergeString = ''): string
+{
+    return DOMAIN . "?controller=$controller&action=$action$mergeString";
+}
+
+function oopunset(object $mixList, $unsetKeys)
+{
+    $keys = is_array($unsetKeys) ? $unsetKeys : [$unsetKeys];
+
+    foreach ($keys as $key) {
+        if (property_exists($mixList, $key)) {
+            unset($mixList->$key);
+        }
+    }
+    return $mixList;
+}
+
+function obget(string $path, array $data)
+{
+    extract($data);
+    ob_start(); // Bắt đầu "bắt" nội dung đầu ra
+    include $path;
+    return ob_get_clean(); // Lấy nội dung và kết thúc bắt đầu ra
+}
+
+function unsetSet(object|array $set)
+{
+    foreach ($set as $key => $value) {
+        if (is_null($value)) {
+            if (is_array($set)) {
+                unset($set[$key]);
+            } else {
+                unset($set->$key);
+            }
+        }
+    }
+    return $set;
+}

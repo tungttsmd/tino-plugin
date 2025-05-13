@@ -1,4 +1,3 @@
-<?php $widget = betterStd($_POST['widget']) ?? null ?>
 <form method="POST" style="max-width: 100%; margin: 20px 0;">
     <div style="margin-top: 10px; display: flex; gap: 20px">
         <input style="background:ghostwhite; width: 100%; flex: 7; padding-left: 10px" disabled placeholder="<?= $widget->data->domain ?? '' ?>">
