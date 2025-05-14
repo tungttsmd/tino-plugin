@@ -32,7 +32,7 @@ class OrderService extends DrawService
     }
     public function get_orderID_by_domainName(object $domainObject, $domainName)
     {
-        return $domainObject->fetchByName($domainName)->domains->{0}->id;
+        return ($domainObject->fetchByName($domainName)->domains->{0}->id) ?? null;
     }
 
     public function orderDomain($nameservers, $auth)
@@ -46,6 +46,7 @@ class OrderService extends DrawService
         ]);
         # Tạo Object Domain
         $dangkytenmien = new Domain($dangnhap->getToken());
+
 
         # Đặt hàng
         $order_status = $dangkytenmien->order($data->domain, 70, betterExplode($data->nameservers));
@@ -64,6 +65,7 @@ class OrderService extends DrawService
             }
         }
         return [
+            'order_response' => $order_status->response ?? '',
             'dangnhap' => $dangnhap,
             'dangkytenmien' => $dangkytenmien,
             'data' => $data,

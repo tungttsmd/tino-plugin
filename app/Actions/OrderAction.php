@@ -26,75 +26,25 @@ class OrderAction
             ->get_order_invoice_id_by_comparing_scan($hoadon, $orderID_by_domain_name);
 
         # Vẽ hoá đơn
-        InvoiceService::make()
+        $invoice_html = InvoiceService::make()
             ->data($widget_data)
             ->draw_invoice($hoadon, $order_invoice_id);
+        echo $invoice_html;
 
         # Kết thúc luồng: orderPayment
 
     }
     public function orderConfirm($nameservers, $auth, $widget_data)
     {
-
         # Chỉ khi nào không flag nào true, nút này mới được tạo
         # DEBUG - SECURIY tiềm ẩn: chưa fix lỗi @csrf, nghĩa là nếu tạo ở F12 Chrome nút value = orderConfirm vẫn có thể truy cập vào đây
 
         $service = OrderService::make()
-            ->orderDomain($nameservers, $auth);
+            ->orderDomain($nameservers, $auth); # DANG DEBUG
 
-        # Tạo dữ liệu nhanh chóng
-
-        extract($service); # LƯU Ý KHI DEBUG: $flag, $dangkytenmien, $data, $dangnhap đều nằm trong $service hết nhé
-
-        if ($flag) {
-            # Tạo đối tượng hoá đơn
-            $hoadon = new Invoice($dangnhap->getToken());
-            # Lấy orderID (dùng domain name để lấy)
-            $orderID_by_domain_name = Orderservice::make()
-                ->data($widget_data)
-                ->get_orderID_by_domainName($dangkytenmien, $data->domain);
-
-            # Kiểm tra invoice có bị trễ do server không (2 lần check thời gian dài đủ để đợi phản hồi api) ƯỚC CHỪNG THÔI ~ có thể sẽ lại Bug
-            $flag = false;
-            $msg = 'Lỗi server: timeout (invoice_id)';
-            for ($i = 0; $i < 2; $i++) {
-                # Dừng khoảng chừng là 0.3 giây ...  :)) tránh spam request, server nghỉ chơi thì mệt
-                sleep(0.15);
-                # Lấy $invoice_id với domain name để scan
-                $order_invoice_id = OrderService::make()
-                    ->data($widget_data)
-                    ->get_order_invoice_id_by_comparing_scan($hoadon, $orderID_by_domain_name);
-                # Nếu không dò được nó trả null. Nếu dò được trả invoice_id -> thì order thì lấy luôn hoá đơn. 
-                if ($order_invoice_id) {
-                    $flag = true;
-                    $msg = '';
-                    break;
-                };
-            }
-
-            if ($flag) {
-                # Vẽ hoá đơn
-                InvoiceService::make()
-                    ->data($widget_data)
-                    ->draw_invoice($hoadon, $order_invoice_id);
-
-                # Kết thúc luồng: orderConfirm
-            } else {
-                # Nhúng form order
-                OrderService::make()
-                    ->data($widget_data)
-                    ->orderNew_form();
-                # Đưa thông báo lỗi $invoice_id: server: timeout invoice có bị trễ do server
-                alert($msg);
-            }
-        } else {
-            # Nhúng form order
-            OrderService::make()
-                ->data($widget_data)
-                ->orderNew_form();
-            # Đưa thông báo lỗi $order_status: server: timeout order có bị trễ do server
-            alert($msg);
-        }
+        $response = json_decode(betterStd($service)->order_response);
+        
+        return $response->invoice_id ?? '';
     }
     public function orderNew($domainName, $nameservers, $auth, $widget_data)
     {
@@ -211,6 +161,22 @@ class OrderAction
         if (isset($msg) && !empty($msg)) {
             alert($msg, $color);
         };
+    }
+    public function orderInvoiceDraw($invoice_id, $auth, $widget_data)
+    {
+        # Tạo đối tượng
+        $dangnhap = new Login($auth->username, $auth->password);
+        $hoadon = new Invoice($dangnhap->getToken());
+
+
+        # Vẽ hoá đơn
+        $invoice_html = InvoiceService::make()
+            ->data($widget_data)
+            ->draw_invoice($hoadon, $invoice_id);
+        return $invoice_html;
+
+        # Kết thúc luồng: orderPayment
+
     }
     public function orderInit($domainName, $nameservers, $username, $password)
     {

@@ -46,7 +46,7 @@ class Invoice extends ApiClient
         return $list;
     }
     # echo print invoice HTML 
-    public function fetchHtml(int $id): string
+    public function fetchHtml(int $id)
     {
         return $this->fetch($id)->invoicebody;
     }
@@ -76,11 +76,15 @@ class Invoice extends ApiClient
         return $link;
     }
     # echo print invoice HTML 
-    public function paymentLinkHtml(int $invoice_id, int $gateway_id = 71): string
+    public function paymentLinkHtml(int $invoice_id, int $gateway_id = 71)
     {
         $endpoint = "/billing/$invoice_id/pay/$gateway_id";
         $data = $this->get($endpoint, []);
-        return json_decode(json: $data['response'])->content;
+        if (isset(json_decode(json: $data['response'])->content)) {
+            return json_decode(json: $data['response'])->content;
+        } else {
+            return null;
+        }
     }
     public function paymentVNPayHref(int $invoice_id)
     {

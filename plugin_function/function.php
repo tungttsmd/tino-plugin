@@ -11,3 +11,9 @@ function shortcode_DangKy()
     include 'DangKy.php';
     return ob_get_clean();
 }
+function shortcode_HoaDon()
+{
+    ob_start();
+    include 'HoaDon.php';
+    return ob_get_clean();
+}
