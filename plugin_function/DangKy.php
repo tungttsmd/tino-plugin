@@ -15,14 +15,15 @@ $action = OrderAction::make()
     ->orderInit(...$configData);
 
 # Giải nén dữ liệu
-extract($action); # $flag, $widget, $nameserver, $auth, $msg, $flag đều nằm đây
+extract($action); # $color, $widget, $nameserver, $auth, $msg, $flag đều nằm đây
 
 $programData = [
     $widget_data,
     $nameservers,
     $auth,
-    $config_nameservers
+    $config_nameservers,
+    $msg,
+    $color
 ];
 # Xử lý và thực thi chương trình
-ProgramAction::make()
-    ->run(...$programData);
+OrderController::make()->run(...$programData);

@@ -18,6 +18,14 @@ class InvoiceService extends DrawService
         $widgetInvoice['button']['VNPayHref'] = $invoiceObject->paymentVNPayHref($order_invoice_id);
         $widgetInvoice['button']['MomoHref'] = $invoiceObject->paymentMomoHref($order_invoice_id);
 
+        // // Chuẩn bị vẽ hóa đơn trong tab mới
+        // $base_url = site_url();
+        // $url =  $base_url . '/draw-invoice.php?invoice_id=' . urlencode($order_invoice_id); // hoặc route Laravel/WordPress tùy bạn
+        // echo "<script>
+        //                 window.open('$url', '_blank'); // Mở tab mới
+        //             </script>";
+        // return; // chặn luồng PHP không chạy tiếp
+
         # Nhúng nút Thanh toan
         $widget = betterStd($widgetInvoice);
         include(betterPath(__FILE__, 2) . 'views/widget_paymentButton.php');

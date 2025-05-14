@@ -1,5 +1,8 @@
 Chi tiết các cập nhật tino_plugin
 
+13.05.2025: 1.3.0
+- Refactor toàn bộ code.
+
 08.05.2025: 1.2.8
 - Đưa mọi include_once, require_once sang require. (file BangGia.php, DangKy.php, index.php) để dễ tìm debug ngay từ đầu
 

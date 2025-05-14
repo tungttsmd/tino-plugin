@@ -15,6 +15,7 @@ spl_autoload_register(function ($classNameWillBeReturnedHere) {
     $path_app_service = dirname(plugin_dir_path(__FILE__)) . "/app/Services/$className.php";
     $path_app_helper = dirname(plugin_dir_path(__FILE__)) . "/app/Helpers/$className.php";
     $path_app_action = dirname(plugin_dir_path(__FILE__)) . "/app/Actions/$className.php";
+    $path_app_controller = dirname(plugin_dir_path(__FILE__)) . "/app/Controllers/$className.php";
 
     if (file_exists($path_app_builder)) {
         include $path_app_builder;
@@ -37,5 +38,8 @@ spl_autoload_register(function ($classNameWillBeReturnedHere) {
     };
     if (file_exists($path_app_action)) {
         include $path_app_action;
+    };
+    if (file_exists($path_app_controller)) {
+        include $path_app_controller;
     };
 });

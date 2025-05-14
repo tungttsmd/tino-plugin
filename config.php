@@ -7,4 +7,4 @@ $config_password = '123123123';
 $config_nameservers =  'dexter.ns.cloudflare.com, nelly.ns.cloudflare.com';
 
 // Tuỳ chỉnh chiều cao theo số cột mong muốn (BẢNG GIÁ)
-$config_rowTable = 10;
+$config_rowTable = 8;

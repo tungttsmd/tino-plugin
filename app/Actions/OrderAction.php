@@ -35,6 +35,7 @@ class OrderAction
     }
     public function orderConfirm($nameservers, $auth, $widget_data)
     {
+
         # Chỉ khi nào không flag nào true, nút này mới được tạo
         # DEBUG - SECURIY tiềm ẩn: chưa fix lỗi @csrf, nghĩa là nếu tạo ở F12 Chrome nút value = orderConfirm vẫn có thể truy cập vào đây
 
@@ -98,6 +99,7 @@ class OrderAction
     public function orderNew($domainName, $nameservers, $auth, $widget_data)
     {
         $flag = true;
+        $color = 'warning';
 
         # Kiểm tra tên miền có để trống không
         if (betterEmpty_list([$domainName])) {
@@ -201,11 +203,14 @@ class OrderAction
             alert($msg);
         }
     }
-    public function orderFormDraw($widget_data)
+    public function orderFormDraw($widget_data, $msg, $color)
     {
         OrderService::make()
             ->data($widget_data)
             ->orderNew_form();
+        if (isset($msg) && !empty($msg)) {
+            alert($msg, $color);
+        };
     }
     public function orderInit($domainName, $nameservers, $username, $password)
     {
@@ -213,6 +218,11 @@ class OrderAction
         $flag = true; # khởi tạo flag
         $msg = ''; # khởi tạo flag
         $color = 'warning';
+
+        if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['noload']) && $_POST['noload'] === "load") {
+            $msg = "Đang đợi thanh toán...";
+            $color = "success";
+        }
 
         # Core 2: Cấu hình đăng nhập & nameservers
         $auth = betterStd([
