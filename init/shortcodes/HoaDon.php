@@ -1,6 +1,6 @@
 <?php
 # Load file cấu hình
-require(dirname(plugin_dir_path(__FILE__)) . '/system/autoload.php');
+require(dirname(dirname(plugin_dir_path(__FILE__))) . '/system/autoload.php');
 
 if (isset($_GET['invoice']) && !empty($_GET['invoice'])) {
     $dangnhap = new Login($config_username, $config_password);

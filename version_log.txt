@@ -1,8 +1,12 @@
 Chi tiết các cập nhật tino_plugin
+15.05.2025: 1.3.3
+- Refactor toàn bộ cấu trúc file index wordpress thành thư mục init
+- Đóng gói toàn bộ Javascript và Ajax vào views theo mô hình MVC
+- Controller thêm AjaxController.php để tối ưu tái dụng mã
+
 14.05.2025: 1.3.2
 - Hoàn thiện chức năng xem hoá đơn của nút [Xem hoá đơn] và [Tiến hành thanh toán] ở một tab riêng lẻ và reload trang chính có msg = Đang đợi thanh toán
 - Thêm config.php với shortcode [webo_hoa_don] để tách biệt trang xem hoá đơn -> tránh rối bố cục
-
 
 14.05.2025: 1.3.1
 - Đã nâng cấp sự kiện bấm nút Xem hoá đơn hoặc tiến hành thanh toán sẽ mở ở tab mới (nhưng vẫn gặp một số lôi Ajax)

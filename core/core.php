@@ -1,16 +1,4 @@
 <?php
-# CHỨC NĂNG ĐĂNG KY -> THANH TOÁN DOMAIN
-function core_autoload()
-{
-    include_once(betterPath(__FILE__, 1) . 'system/ApiClient.php');
-    include_once(betterPath(__FILE__, 1)  . 'models/Login.php');
-    include_once(betterPath(__FILE__, 1)  . 'models/Domain.php');
-    include_once(betterPath(__FILE__, 1)  . 'models/Invoice.php');
-    include_once(betterPath(__FILE__, 1)  . 'models/Tld.php');
-    include_once(betterPath(__FILE__, 1)  . 'models/Pricing.php');
-    include_once(betterPath(__FILE__, 1)  . 'models/Ticket.php');
-    include_once(betterPath(__FILE__, 1)  . 'models/Config.php');
-}
 function alert($content, $type = 'warning')
 {
     $msg = $content;

@@ -39,7 +39,6 @@ class OrderController
                 ->get_order_invoice_id_by_comparing_scan($hoadon, $orderID);
             return $invoiceID;
         } else {
-            betterDebug($_POST);
             $dangnhap = new Login($auth->username, $auth->password);
             $hoadon = new Invoice($dangnhap->getToken());
             echo InvoiceService::make()->draw_invoice($hoadon, $_GET['invoice']);

@@ -1,10 +1,10 @@
 <?php
-require_once('../system/ApiClient.php');
-require_once('../lib/lib.php');
-require_once('../models/Config.php');
-require_once('../models/Tld.php');
-require_once('../models/Login.php');
-require_once('../config.php');
+require(dirname(__DIR__).'/lib/lib.php');
+require(dirname(__DIR__).'/app/Models/Config.php');
+require(dirname(__DIR__).'/config.php');
+require(dirname(__DIR__).'/app/System/Apiclient.php');
+require(dirname(__DIR__).'/app/Models/Tld.php');
+require(dirname(__DIR__).'/app/Models/Login.php');
 $login = new Login($config_username, password: $config_password);
 $tld = new Tld($login->getToken());
 $list = new stdClass;

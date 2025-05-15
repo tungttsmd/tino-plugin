@@ -1,6 +1,6 @@
 <?php
 # Load file cấu hình
-require(dirname(plugin_dir_path(__FILE__)) . '/system/autoload.php');
+require(dirname(dirname(plugin_dir_path(__FILE__))) . '/system/autoload.php');
 
 # Lấy dữ liệu
 $configData = [
