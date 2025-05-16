@@ -1,6 +1,6 @@
 <?php
 // LỆNH TRIỂN KHAI AJAX THEO CHUẨN WP: [action name]_callback()
-function DOMAINPAYMENT_callback()
+function ajaxRequest_invoiceRender_callback()
 {
     require(dirname(dirname(plugin_dir_path(__FILE__))) . '/system/autoload.php');
 
@@ -13,7 +13,7 @@ function DOMAINPAYMENT_callback()
     wp_send_json(array('invoiceID' => $data->invoiceID ?? '', 'hoadonUrl' => $config_invoiceDraw ?? ''));
     // }
 };
-function DOMAINORDER_callback()
+function ajaxRequest_domainOrder_callback()
 {
     require(dirname(dirname(plugin_dir_path(__FILE__))) . '/system/autoload.php');
 
@@ -27,14 +27,7 @@ function DOMAINORDER_callback()
     wp_send_json(array('invoiceID' => $data->response->invoice_id ?? '', 'hoadonUrl' => $config_invoiceDraw ?? ''));
 };
 
-function ORDERNEWFORM_callback()
-{
-    require(dirname(dirname(plugin_dir_path(__FILE__))) . '/system/autoload.php');
-    AjaxController::make()
-        ->orderNewForm($_POST['domainAjax'] ?? '', $config_nameservers, $config_username, $config_password);
-    wp_die();
-}
-function ORDERCHECKFORM_callback()
+function ajaxRequest_domainInspect_callback()
 {
     require(dirname(dirname(plugin_dir_path(__FILE__))) . '/system/autoload.php');
     AjaxController::make()

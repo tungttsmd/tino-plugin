@@ -25,7 +25,7 @@ class ButtonAction {
     this.jstyle.css_wait();
 
     let data = {
-      action: "DOMAINPAYMENT",
+      action: "ajaxRequest_invoiceRender",
       ajaxConfirm: "true",
       domainInput: jQuery("#domainInput").val(),
     };
@@ -48,7 +48,7 @@ class ButtonAction {
       this.jstyle.css_wait();
 
       let data = {
-        action: "DOMAINORDER",
+        action: "ajaxRequest_domainOrder",
         ajaxConfirm: "true",
         domain: jQuery("#domainInput").val(),
         button: "orderConfirm",
@@ -74,7 +74,7 @@ class ButtonAction {
     this.jstyle.css_wait();
 
     const data = {
-      action: "ORDERCHECKFORM",
+      action: "ajaxRequest_domainInspect",
       domainAjax: jQuery("#domainInput").val(),
     };
 
