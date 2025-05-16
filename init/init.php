@@ -13,6 +13,10 @@ add_action('wp_ajax_DOMAINPAYMENT', 'DOMAINPAYMENT_callback');
 add_action('wp_ajax_nopriv_DOMAINPAYMENT', 'DOMAINPAYMENT_callback'); // Dành cho người dùng không đăng nhập
 add_action('wp_ajax_DOMAINORDER', 'DOMAINORDER_callback');
 add_action('wp_ajax_nopriv_DOMAINORDER', 'DOMAINORDER_callback'); // Dành cho người dùng không đăng nhập
+add_action('wp_ajax_ORDERNEWFORM', 'ORDERNEWFORM_callback');
+add_action('wp_ajax_nopriv_ORDERNEWFORM', 'ORDERNEWFORM_callback'); // Dành cho người dùng không đăng nhập
+add_action('wp_ajax_ORDERCHECKFORM', 'ORDERCHECKFORM_callback');
+add_action('wp_ajax_nopriv_ORDERCHECKFORM', 'ORDERCHECKFORM_callback'); // Dành cho người dùng không đăng nhập
 
 # Đăng ký tải javascript
 add_action('wp_enqueue_scripts', 'javascript_include_wp_style');

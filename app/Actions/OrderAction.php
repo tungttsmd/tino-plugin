@@ -43,7 +43,7 @@ class OrderAction
             ->orderDomain($nameservers, $auth); # DANG DEBUG
 
         $response = json_decode(betterStd($service)->order_response);
-        
+
         return $response->invoice_id ?? '';
     }
     public function orderNew($domainName, $nameservers, $auth, $widget_data)
@@ -124,6 +124,8 @@ class OrderAction
                         # Đưa lại biểu mẫu để sửa tên miền phù hựp
                         OrderService::make()
                             ->data($widget_data)
+                            ->merge(['msg' => $msg])
+                            ->merge(['color' => $color])
                             ->orderNew_form();
                         # Báo lỗi tên miền đã được ai đó sở hữu
                         alert($msg, $color);
@@ -140,6 +142,8 @@ class OrderAction
                 # Đưa lại biểu mẫu (không dùng được vì đăng nhập không thành công)
                 OrderService::make()
                     ->data($widget_data)
+                    ->merge(['msg' => $msg])
+                    ->merge(['color' => $color])
                     ->orderNew_form();
                 # Báo lỗi Thông tin đăng nhập không đúng
                 alert($msg, 'danger');
@@ -148,6 +152,8 @@ class OrderAction
             # Đưa lại biểu mẫu để sửa tên miền
             OrderService::make()
                 ->data($widget_data)
+                ->merge(['msg' => $msg])
+                ->merge(['color' => $color])
                 ->orderNew_form();
             # Báo lỗi tên đang miền để trống hoặc giá trị rỗng
             alert($msg);
@@ -157,10 +163,9 @@ class OrderAction
     {
         OrderService::make()
             ->data($widget_data)
+            ->merge(['msg' => $msg])
+            ->merge(['color' => $color])
             ->orderNew_form();
-        if (isset($msg) && !empty($msg)) {
-            alert($msg, $color);
-        };
     }
     public function orderInvoiceDraw($invoice_id, $auth, $widget_data)
     {
@@ -215,5 +220,22 @@ class OrderAction
             'color' => $color,
 
         ];
+    }
+    // AJAX SERVER
+    public function ajaxNewForm($widget_data, $msg, $color)
+    {
+        ob_start();
+        OrderService::make()
+            ->data($widget_data)
+            ->merge(['msg' => $msg])
+            ->merge(['color' => $color])
+            ->orderNew_form();
+        return ob_get_flush();
+    }
+    public function ajaxCheckForm($domainName, $nameservers, $auth, $widget_data)
+    {
+        ob_start();
+        $this->orderNew($domainName, $nameservers, $auth, $widget_data);
+        return ob_get_flush();
     }
 }

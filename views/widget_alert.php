@@ -40,7 +40,7 @@
     }
 </style>
 
-<div class="custom-alert custom-alert-warning" style="border: none; background-color: <?= $color ?>; color: <?= $text ?>" id="my-alert">
+<div class="custom-alert custom-alert-warning" style="border: none; background-color: <?= $color ?>; color: <?= $text ?>" id="tinoPluginAlert">
     <span id="alertMe"><?= $msg ?? '...' ?></span>
     <button class="close-btn" onclick="document.getElementById('my-alert').style.display='none'">&times;</button>
 </div>

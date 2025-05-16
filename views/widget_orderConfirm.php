@@ -1,13 +1,14 @@
 <div id="drawHere">
     <form id="orderForm" method="POST" style="max-width: 100%; margin: 20px 0;">
         <div style="margin-top: 10px; display: flex; gap: 20px">
-            <input style="background:ghostwhite; width: 100%; flex: 7; padding-left: 10px" disabled placeholder="<?= $widget->data->domain ?? '' ?>">
+            <input id="domain" style="background:ghostwhite; width: 100%; flex: 7; padding-left: 10px" value="<?= $widget->data->domain ?? '' ?>">
             <!--- Warning start: Chưa nâng cấp bảo mật @csrf -->
             <input id="domainInput" type="hidden" name="domain" value="<?= $widget->data->domain ?? '' ?>">
             <!--- Warning end: Chưa nâng cấp bảo mật @csrf -->
-            <button type="submit" name="button" onclick="submitToSameTab(event)" value="orderOther" style="flex: 3">Nhập tên miền khác</button>
+            <button type="submit" name="button" onclick="ajaxCheckForm(event)" value="orderNew" style="flex: 3">Kiểm tra</button>
             <button
                 type="submit"
+                id="orderNewButton"
                 name="button"
                 value="orderConfirm"
                 onclick="confirmAndSubmitToNewTab(event, '<?= $widget->data->domain ?? '' ?>')""

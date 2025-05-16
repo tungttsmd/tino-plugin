@@ -1,4 +1,7 @@
 Chi tiết các cập nhật tino_plugin
+15.05.2025: 1.3.4
+- Hoàn thành tạo reload Ajax không tải trang
+
 15.05.2025: 1.3.3
 - Refactor toàn bộ cấu trúc file index wordpress thành thư mục init
 - Đóng gói toàn bộ Javascript và Ajax vào views theo mô hình MVC

@@ -13,4 +13,9 @@ class DrawService
     {
         return $this->widget;
     }
+    public function merge($arrayWithKey)
+    {
+        $this->widget = array_merge((array) $this->widget, (array) $arrayWithKey);
+        return $this;
+    }
 }

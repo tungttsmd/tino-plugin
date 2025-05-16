@@ -10,9 +10,7 @@ class OrderController
             $_POST['button'] = "orderOther";
         };
         // Ajax send $_POST ajaxConfirm and domainInput together
-
         if (!isset($_POST['ajaxConfirm']) && !isset($_GET['invoice'])) {
-
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 OrderAction::make()
                     ->orderFormDraw($widget_data, $msg, $color);

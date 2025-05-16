@@ -16,6 +16,7 @@ class AjaxPack {
         method: this.config.method,
         success: this.config.success,
         error: this.config.error,
+        dataType: this.config.dataType || "json"
       });
     }
   }

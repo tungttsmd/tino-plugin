@@ -26,3 +26,18 @@ function DOMAINORDER_callback()
     # Xử lý và thực thi chương trìnhs
     wp_send_json(array('invoiceID' => $data->response->invoice_id ?? '', 'hoadonUrl' => $config_invoiceDraw ?? ''));
 };
+
+function ORDERNEWFORM_callback()
+{
+    require(dirname(dirname(plugin_dir_path(__FILE__))) . '/system/autoload.php');
+    AjaxController::make()
+        ->orderNewForm($_POST['domainAjax'] ?? '', $config_nameservers, $config_username, $config_password);
+    wp_die();
+}
+function ORDERCHECKFORM_callback()
+{
+    require(dirname(dirname(plugin_dir_path(__FILE__))) . '/system/autoload.php');
+    AjaxController::make()
+        ->orderCheckForm($_POST['domainAjax'] ?? '', $config_nameservers, $config_username, $config_password);
+    wp_die();
+}
