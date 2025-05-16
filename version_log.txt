@@ -1,4 +1,7 @@
 Chi tiết các cập nhật tino_plugin
+16.05.2025: 1.3.5
+- Đóng gói Javascript thành MVC
+
 15.05.2025: 1.3.4
 - Hoàn thành tạo reload Ajax không tải trang
 

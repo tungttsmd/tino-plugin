@@ -14,11 +14,8 @@ class OrderService extends DrawService
     }
     public function orderNew_form()
     {
-        $widget = $this->widget();
+        $widget = betterStd($this->widget());
         include(betterPath(__FILE__, 2) . 'views/widget_orderNew.php');
-        if (isset($widget->msg) && !empty($widget->msg)) {
-            alert($widget['msg'], $widget['color']);
-        };
     }
 
     public function orderConfirm_form()

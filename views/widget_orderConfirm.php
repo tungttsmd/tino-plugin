@@ -5,13 +5,12 @@
             <!--- Warning start: Chưa nâng cấp bảo mật @csrf -->
             <input id="domainInput" type="hidden" name="domain" value="<?= $widget->data->domain ?? '' ?>">
             <!--- Warning end: Chưa nâng cấp bảo mật @csrf -->
-            <button type="submit" name="button" onclick="ajaxCheckForm(event)" value="orderNew" style="flex: 3">Kiểm tra</button>
+            <button class="inspectOrderButton" type="submit" name="button" value="orderNew" style="flex: 3">Kiểm tra</button>
             <button
                 type="submit"
-                id="orderNewButton"
+                id="domainOrderButtonId"
                 name="button"
                 value="orderConfirm"
-                onclick="confirmAndSubmitToNewTab(event, '<?= $widget->data->domain ?? '' ?>')""
                 style=" flex: 3">
                 Tiến hành đặt hàng
             </button>

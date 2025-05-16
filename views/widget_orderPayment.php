@@ -4,8 +4,8 @@
             <input id="domain" style="background:ghostwhite; width: 100%; flex: 7; padding-left: 10px" value="<?= $widget->data->domain ?? '' ?>">
             <input id="domainInput" type="hidden" name="domain" value="<?= $widget->data->domain ?? '' ?>">
 
-            <button type="submit" name="button" onclick="ajaxCheckForm(event)" value="orderNew" style="flex: 3">Kiểm tra</button>
-            <button id="orderPaymentButton" type="submit" name="button" onclick="ajaxpost(event)" value="orderPayment" style="flex: 3">Xem hoá đơn</button>
+            <button class="inspectOrderButton" type="submit" name="button" value="orderNew" style="flex: 3">Kiểm tra</button>
+            <button id="invoiceRenderButtonId" type="submit" name="button" value="orderPayment" style="flex: 3">Xem hoá đơn</button>
             <input type="hidden" name="button" id="buttonPOSTsend" value="">
             <input type="hidden" name="noload" id="noload" value="">
         </div>
