@@ -13,4 +13,9 @@ class DomainService
             'nameservers' => $nameservers,
         ]);
     }
+    public function domainLookup($domainName, $username, $password)
+    {
+        $token = AuthService::make()->getToken($username, $password);
+        return Domain::make($token)->lookup($domainName);
+    }
 }

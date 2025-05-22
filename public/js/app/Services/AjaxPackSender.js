@@ -10,7 +10,7 @@ class AjaxPackSender {
   send() {
     jQuery.ajax({
       url: this.config.url,
-      data: this.config.data,
+      data: this.config.data || {},
       method: this.config.method,
       success: this.config.success,
       error: this.config.error,

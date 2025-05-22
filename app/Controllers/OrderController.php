@@ -1,9 +1,9 @@
 <?php
-class OrderController
+class OrderController extends Controller
 {
     use BaseService;
 
-    public function run($widget_data, $nameservers, $auth, $config_nameservers, $msg, $color)
+    public function run($widget_data, $nameservers, $auth, $config_nameservers, $config_tlds, $msg, $color)
     {
 
         if (!isset($_POST['button']) || empty($_POST['button'])) {
@@ -13,11 +13,12 @@ class OrderController
         if (!isset($_POST['ajaxConfirm']) && !isset($_GET['invoice'])) {
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 OrderAction::make()
-                    ->orderFormDraw($widget_data, $msg, $color);
+                    ->orderFormDraw($widget_data, $config_tlds, $msg, $color);
             } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['button'] === 'orderOther')) {
                 OrderAction::make()
-                    ->orderFormDraw($widget_data, $msg, $color);
+                    ->orderFormDraw($widget_data, $config_tlds, $msg, $color);
             } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['button'] === 'orderNew')) {
+                # orderNew Có nhả true/false (true = đăng nhập và nhập liệu không có vấn đề)
                 OrderAction::make()
                     ->orderNew($_POST['domain'] ?? '', $nameservers, $auth, $widget_data);
             } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['button'] === 'orderConfirm') {
@@ -28,18 +29,31 @@ class OrderController
                     ->orderPayment($_POST['domain'] ?? '', $config_nameservers, $auth, $widget_data);
             }
         } elseif (isset($_POST['ajaxConfirm']) && !isset($_GET['invoice'])) {
-            $dangnhap = new Login($auth->username, $auth->password);
-            $dangkytenmien = new Domain($dangnhap->getToken());
-            $hoadon = new Invoice($dangnhap->getToken());
-            $orderID = OrderService::make()
-                ->get_orderID_by_domainName($dangkytenmien, $_POST['domainInput']);
-            $invoiceID = OrderService::make()
-                ->get_order_invoice_id_by_comparing_scan($hoadon, $orderID);
-            return $invoiceID;
+            return OrderAction::make()
+                ->ajaxInvoiceLookupPrint($auth->username, $auth->password, $_POST['domainInput']);
         } else {
-            $dangnhap = new Login($auth->username, $auth->password);
-            $hoadon = new Invoice($dangnhap->getToken());
-            echo InvoiceService::make()->draw_invoice($hoadon, $_GET['invoice']);
+            OrderAction::make()
+                ->ajaxInvoiceIdPrint($auth->username, $auth->password);
         }
+    }
+
+    public function suggestionCell($sld, $tld, $username, $password)
+    {
+        $info = DomainService::make()->domainLookup($sld . "." . $tld, $username, $password);
+        $data = betterStd([
+            'price' => $info->tld !== '.vn' ? number_format($info->periods->{'0'}->register ?? '0', 0, ',', '.') : '450.000',
+            'domain' => $info->domain ?? '0',
+            'status' => $info->status ?? 0,
+            'tld' => $info->tld,
+            'sld' => $info->sld
+        ]);
+        ob_start();
+        $this->render('widget_suggestion_cell', $data);
+        return ob_get_flush();
+    }
+    public function suggestionGetSld($domainInput, $username, $password)
+    {
+        $info = DomainService::make()->domainLookup($domainInput, $username, $password);
+        return ['sld' => $info->sld];
     }
 }

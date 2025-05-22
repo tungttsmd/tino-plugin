@@ -2,8 +2,9 @@
 class AuthService
 {
     use BaseService;
-    public function lookup($dangkytenmien, $data)
+    public function getToken($username, $password)
     {
-        return $dangkytenmien->lookup($data->domain);
+        $dangnhap = new Login($username, $password);
+        return $dangnhap->getToken();
     }
 }

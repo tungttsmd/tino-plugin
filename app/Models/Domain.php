@@ -2,6 +2,7 @@
 
 class Domain extends ApiClient
 {
+    use BaseService;
     private $header;
     private $timeout;
     private $sslVerify;

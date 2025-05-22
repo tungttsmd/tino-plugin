@@ -1,4 +1,11 @@
 Chi tiết các cập nhật tino_plugin
+16.05.2025: 1.3.7
+- Đã ập nhật chức năng đề xuất theo danh sách config_tlds
++ Chưa lấy danh sách theo bảng pricing
++ Chưa có load more
++ Code chưa refactor
+
+
 16.05.2025: 1.3.6
 - Tổ chức thư mục js, css vào public
 - Đã thêm css spinner xoay xoay lúc đang load Ajax

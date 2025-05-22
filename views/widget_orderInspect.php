@@ -1,9 +1,3 @@
-<div id="spinnerOverlayBox">
-    <input id="saveOldSld" type="hidden" value="">
-    <div id="spinnerCenter">
-        <div id="WaitSpinner"></div>
-    </div>
-    <div id="drawHere">
         <form method="POST" style="max-width: 100%; margin: 20px 0;">
             <div style="margin-top: 10px; display: flex; gap: 20px; margin-bottom: 20px;">
                 <div class="uiBlock">
@@ -16,9 +10,3 @@
                 <input type="hidden" name="noload" id="noload" value="">
             </div>
         </form>
-        <div id="tinoPluginAlert" style="padding: 0px 20px; margin-bottom: 10px"></div>
-    </div>
-</div>
-<div id="loadBar"></div>
-<div id="suggestionSelection">
-</div>

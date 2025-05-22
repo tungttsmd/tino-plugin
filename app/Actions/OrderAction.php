@@ -48,6 +48,8 @@ class OrderAction
     }
     public function orderNew($domainName, $nameservers, $auth, $widget_data)
     {
+        # return true -> đang call api tới máy chủ, đăng nhập và nhập liệu không có vấn đề (ứng dụng ban đầu: suggestion ajax run)
+        # return false -> không call api tới máy chủ vì đăng nhập hoặc nhập liệu có vấn đề (ứng dụng ban đầu: suggestion ajax run)
         $flag = true;
         $color = 'warning';
 
@@ -118,15 +120,15 @@ class OrderAction
                         # Lưu trữ dữ liệu cần thiết để thông báo
                         $domainInfo = WidgetService::make()
                             ->widgetAlert($lookup);
-                        # Báo lỗi tên miền đã được ai đó sở hữu
-                        alert("Tên miền $domainInfo->domain có thể đăng ký. Giá: $domainInfo->payment_total VND. Bấm [Tiến hành đặt hàng] để mua tên miền này", 'success');
+                        # Tên miền hợp lệ có thể đăng ki
+                        alert("Tên miền <span id='msgDomainMessage'>$domainInfo->domain</span> có thể đăng ký. Giá: <span id='msgDomainPrice'>$domainInfo->payment_total</span> VND. Bấm [Tiến hành đặt hàng] để mua tên miền này", 'success');
                     } else {
-                        # Đưa lại biểu mẫu để sửa tên miền phù hựp
+                        # Đưa lại biểu mẫu để sửa tên miền phù hựp và Báo lỗi tên miền đã được ai đó sở hữu
                         OrderService::make()
                             ->data($widget_data)
                             ->merge(['msg' => $msg])
                             ->merge(['color' => $color])
-                            ->orderNew_form();
+                            ->orderInspect_form();
                         # Báo lỗi tên miền đã được ai đó sở hữu
                         alert($msg, $color);
                     }
@@ -138,6 +140,10 @@ class OrderAction
                     # Báo là đơn hàng chờ thanh toán
                     alert($msg);
                 }
+
+                # Trạng thái true đại diện là đã call api thành công
+                # Miễn là ô nhập không để trống và đăng nhập thành công thì trả trạng thái tìm kiếm suggestion
+                return true;
             } else {
                 # Đưa lại biểu mẫu (không dùng được vì đăng nhập không thành công)
                 OrderService::make()
@@ -158,14 +164,19 @@ class OrderAction
             # Báo lỗi tên đang miền để trống hoặc giá trị rỗng
             alert($msg);
         }
+        # Trạng thái false đại diện là không call api được
+        # Ô nhập không để trống hoăc đăng nhập không thành công thì trả trạng thái tìm kiếm suggestion = false
+        return false;
     }
-    public function orderFormDraw($widget_data, $msg, $color)
+    public function orderFormDraw($widget_data, $config_tlds, $msg, $color)
     {
-        OrderService::make()
+        $orderService = OrderService::make()
             ->data($widget_data)
             ->merge(['msg' => $msg])
             ->merge(['color' => $color])
-            ->orderNew_form();
+            ->merge(['config_tlds' => $config_tlds]);
+        $orderService->orderNew_form();
+        // $orderService->orderSuggestion_table();
     }
     public function orderInvoiceDraw($invoice_id, $auth, $widget_data)
     {
@@ -200,7 +211,6 @@ class OrderAction
             'username' => $username,
             'password' => $password
         ]);
-        // $widget_data = betterStd(['data' => ['domain' => trim($_POST['domain'] ?? ''), 'nameservers' => $nameservers,], 'login' => (array) $auth]);
 
         # Core 3: Lưu trữ dữ liệu
         $_POST['nameservers'] = betterStd(betterExplode($nameservers)); # Dữ liệu cấu hình nameservers
@@ -221,7 +231,27 @@ class OrderAction
 
         ];
     }
+
     // AJAX SERVER
+    public function ajaxInvoiceLookupPrint($username, $password, $domainName)
+    {
+        $token = AuthService::make()
+            ->getToken($username, $password);
+        $dangkytenmien = new Domain($token);
+        $hoadon = new Invoice($token);
+        $orderID = OrderService::make()
+            ->get_orderID_by_domainName($dangkytenmien, $domainName);
+        $invoiceID = OrderService::make()
+            ->get_order_invoice_id_by_comparing_scan($hoadon, $orderID);
+        return $invoiceID;
+    }
+
+    public function ajaxInvoiceIdPrint($username, $password)
+    {
+        $dangnhap = new Login($username, $password);
+        $hoadon = new Invoice($dangnhap->getToken());
+        echo InvoiceService::make()->draw_invoice($hoadon, $_GET['invoice']);
+    }
     public function ajaxNewForm($widget_data, $msg, $color)
     {
         ob_start();
@@ -235,7 +265,10 @@ class OrderAction
     public function ajaxCheckForm($domainName, $nameservers, $auth, $widget_data)
     {
         ob_start();
-        $this->orderNew($domainName, $nameservers, $auth, $widget_data);
-        return ob_get_flush();
+        $status = $this->orderNew($domainName, $nameservers, $auth, $widget_data);
+        return [
+            'html' => ob_get_flush(),
+            'suggestionStatus' => $status
+        ];
     }
 }

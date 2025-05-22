@@ -14,10 +14,16 @@ class DomainOrderStyle {
     jQuery("#" + waitingOrder).text("Đang đợi thanh toán...");
   }
   css_buttonInvoiceRenderRemove() {
-    jQuery("#" + invoiceRenderButtonConst).remove();
+    let el = jQuery("#" + invoiceRenderButtonConst);
+    if (el) {
+      el.remove();
+    }
   }
   css_buttonDomainOrderRemove() {
-    jQuery("#" + domainOrderButtonConst).remove();
+    let el = jQuery("#" + domainOrderButtonConst);
+    if (el) {
+      el.remove();
+    }
   }
   css_pointerEventNone() {
     jQuery("#" + divStop).css("pointer-events", "none");
@@ -36,5 +42,16 @@ class DomainOrderStyle {
   }
   css_preventDefault(event) {
     event.preventDefault();
+  }
+  css_alertColorWarning() {
+    let el = jQuery(customAlert);
+    let spanEl = jQuery(spanAlert);
+    console.log(el);
+
+    if (el) {
+      el.css("background-color", "#fff3cd");
+      spanEl.css("color", "#664d03");
+      console.log("trả lời tao");
+    }
   }
 }

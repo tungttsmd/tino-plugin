@@ -1,6 +1,8 @@
 <?php
 function enqueue_scripts()
 {
+    require(dirname(dirname(plugin_dir_path(__FILE__))) . '/system/autoload.php');
+
     $plugin_js_path = dirname(dirname(plugin_dir_url(__FILE__))) . '/public/js/app/';
 
     wp_enqueue_script('enqPack', $plugin_js_path . 'Models/Pack.js', array('jquery'), null, true);
@@ -16,8 +18,21 @@ function enqueue_scripts()
 
     // Đưa URL wp-admin ajax vào JavaScript (Sử dụng wp_localize_script() để truyền biến PHP sang JS → chuẩn WordPress.)
     # Truyền biến PHP vào vào javascript (xài trong code front-end js khi khởi tạo) 
+
+    # Vẽ bảng loader suggestion để xài tự do
+    $orderService = OrderService::make();
+    ob_start();
+    $orderService->orderSuggestion_table($config_tlds);
+    $htmlSuggestionTableLoader = ob_get_clean();
+    ob_start();
+    $orderService->orderSuggestion_loadBar();
+    $htmlLoadBar = ob_get_clean();
+
     wp_localize_script('enqIndexJS', 'indexPackJs', array(
-        'adminAjaxUrl' => admin_url('admin-ajax.php') // URL của admin-ajax.php
+        'adminAjaxUrl' => admin_url('admin-ajax.php'), // URL của admin-ajax.php
+        'listTlds' => $config_tlds, // URL của admin-ajax.php
+        'htmlLoadSuggestion' =>  $htmlSuggestionTableLoader,
+        'htmlLoadBar' => $htmlLoadBar
     ));
 }
 function enqueue_styles()
@@ -25,4 +40,6 @@ function enqueue_styles()
     $plugin_css_path = dirname(dirname(plugin_dir_url(__FILE__))) . '/public/css/';
     wp_enqueue_style('enqWaitSpinner', $plugin_css_path . 'WaitSpinner.css', array(), '1.0.0');
     wp_enqueue_style('enqPaymentButton', $plugin_css_path . 'PaymentButton.css', array(), '1.0.0');
+    wp_enqueue_style('enqSuggestionBar', $plugin_css_path . 'SuggestionBar.css', array(), '1.0.0');
+    wp_enqueue_style('enqInputUiBlock', $plugin_css_path . 'InputUiBlock.css', array(), '1.0.0');
 }

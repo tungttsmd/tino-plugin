@@ -17,6 +17,22 @@ class OrderService extends DrawService
         $widget = betterStd($this->widget());
         include(betterPath(__FILE__, 2) . 'views/widget_orderNew.php');
     }
+    public function orderInspect_form()
+    {
+        $widget = betterStd($this->widget());
+        include(betterPath(__FILE__, 2) . 'views/widget_orderInspect.php');
+    }
+
+    public function orderSuggestion_table($list_tlds)
+    {
+
+        $widget = betterStd(array_merge((array) $this->widget(), $list_tlds));
+        include(betterPath(__FILE__, 2) . 'views/widget_suggestion_table.php');
+    }
+    public function orderSuggestion_loadBar()
+    {
+        include(betterPath(__FILE__, 2) . 'views/widget_suggestion_load_bar.php');
+    }
 
     public function orderConfirm_form()
     {

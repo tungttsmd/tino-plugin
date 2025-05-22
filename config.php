@@ -12,11 +12,14 @@ $config_invoiceDraw = 'http://localhost/etb/hoa-don';
 
 # C. Cấu hình dữ liệu
 // Nhập tài khoản tự đăng nhập Tino.org ở đây
-$config_username = 'thanhtung.tran2k@gmail.com';
+$config_username = 'lager753@gmail.com';
 $config_password = '123123123';
 
 // Nhập nameservers ở đây
 $config_nameservers =  'dexter.ns.cloudflare.com, nelly.ns.cloudflare.com';
+
+// Nhập danh sách tên miền đề xuất
+$config_tlds = ['id.vn', 'io.vn', 'vn', 'com.vn', 'com', 'net', 'org', 'info', 'xyz', 'biz.vn'];
 
 // Tuỳ chỉnh chiều cao theo số cột mong muốn (BẢNG GIÁ)
 $config_rowTable = 8;

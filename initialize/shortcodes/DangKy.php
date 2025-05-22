@@ -22,8 +22,9 @@ $programData = [
     $nameservers,
     $auth,
     $config_nameservers,
+    $config_tlds,
     $msg,
-    $color
+    $color,
 ];
 # Xử lý và thực thi chương trình
 OrderController::make()->run(...$programData);

@@ -1,0 +1,101 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f8fdff;
+  margin: 0;
+  padding: 20px;
+}
+
+.domain-list {
+  margin: auto;
+}
+
+.domain-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.domain-left {
+  text-align: right;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.domain-right .status.false {
+  background: rgb(245, 176, 163);
+  color: rgb(184, 11, 11);
+  border: none;
+  padding: 4px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.domain-left .status {
+  background: rgb(212, 245, 219);
+  color: rgb(0, 160, 35);
+  border: none;
+  padding: 4px 15px;
+  border-radius: 5px;
+}
+
+.domain-left a:hover {
+  opacity: 0.8;
+}
+
+.domain-name {
+  font-weight: bold;
+  font-size: 18px;
+}
+.domain-name.false {
+    text-decoration: line-through;
+}
+.status {
+  background: #d4f5e3;
+  color: #2e8b57;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  display: inline-block;
+  margin-top: 5px;
+  cursor: default !important;
+}
+
+.domain-right {
+  text-align: right;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.domain-right a {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 4px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.suggestionSelection:hover {
+  opacity: 0.6;
+  color: black;
+  background-color: orange;
+}
+
+.price {
+  color: #17a085;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 14px;
+  margin-right: 5px;
+}

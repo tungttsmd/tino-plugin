@@ -25,9 +25,11 @@ class AjaxController
             $nameservers,
             $auth,
             $config_nameservers,
+            $config_tlds,
             $msg,
             $color
         ];
+
         # Xử lý và thực thi chương trình
         $invoiceID = OrderController::make()->run(...$programData);
 
@@ -71,7 +73,6 @@ class AjaxController
         ];
     }
 
-
     public function orderNewForm($domainName, $nameservers, $username, $password)
     {
         # Lấy dữ liệu
@@ -102,7 +103,7 @@ class AjaxController
 
         return $formData;
     }
-    public function orderCheckForm($domainName, $nameservers, $username, $password)
+    public function orderCheckForm($domainName, $nameservers, $config_tlds, $username, $password)
     {
         # Lấy dữ liệu
         $configData = [
@@ -120,6 +121,7 @@ class AjaxController
         extract($action); # $color, $widget, $nameserver, $auth, $msg, $flag đều nằm đây
 
         $programData = [
+            $config_tlds,
             $widget_data,
             $nameservers,
             $auth,
@@ -127,8 +129,10 @@ class AjaxController
             $msg,
             $color
         ];
+        ob_flush();
         $formData = OrderAction::make()
             ->ajaxCheckForm($domainName ?? '', $nameservers, $auth, $widget_data);
+        ob_end_clean();
         return $formData;
     }
 }
