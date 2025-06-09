@@ -1,0 +1,33 @@
+{
+  "name": "tino/tino-api",
+  "description": "Plugin call api tino",
+  "type": "project",
+  "require": {
+    "guzzlehttp/guzzle-services": "^1.4"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Tino\\TinoApi\\": "src/",
+      "Includes\\": "src/includes/",
+      "App\\": "src/app",
+      "Model\\": "src/app/Model/",
+      "models\\": "src/models/",
+      "System\\": "src/system/"
+    },
+    "files": [
+      "config.php",
+      "src/includes/Plugin.php"
+    ]
+  },
+  "minimum-stability": "stable",
+  "require-dev": {
+    "wp-coding-standards/wpcs": "*",
+    "squizlabs/php_codesniffer": "^3.13"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}
