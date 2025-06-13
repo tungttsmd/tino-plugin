@@ -1,0 +1,32 @@
+.uiBlock {
+  border: 1px solid green;
+  border-radius: 6px;
+  padding: 6px;
+  width: 100%;
+  display: flex;
+}
+
+.uiBlock input {
+  border: none;
+  border-radius: 4px;
+}
+.uiBlock button {
+  background-color: #2e7d32;
+  color: ghostwhite;
+  border-radius: 4px;
+  transition: transform 0.2s ease;
+}
+.uiBlock button.inspectOrderButton {
+  background-color: green;
+}
+.uiBlock button#invoiceRenderButtonId {
+  background-color: sandybrown;
+}
+.uiBlock button:hover {
+  transform: scale(0.95);
+  opacity: 0.6;
+}
+#tino-container .uiBlock:hover {
+  border: 1px solid #2e7d32;
+}
+

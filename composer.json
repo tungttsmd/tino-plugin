@@ -1,0 +1,38 @@
+{
+  "name": "tino/tino-api",
+  "description": "Plugin call api tino",
+  "type": "wordpress-plugin",
+  "require": {
+    "guzzlehttp/guzzle-services": "^1.4"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Tino\\": "src/",
+      "Includes\\": "src/includes/",
+      "Repository\\": "src/app/Repository/",
+      "Model\\": "src/app/Model/",
+      "Service\\": "src/app/Service/",
+      "Helper\\": "src/app/Helper/",
+      "Action\\": "src/app/Action/",
+      "Controller\\": "src/app/Controller/",
+      "App\\": "src/app",
+      "models\\": "src/models/",
+      "System\\": "src/system/"
+    },
+    "files": [
+      "config.php"
+    ]
+  },
+  "minimum-stability": "stable",
+  "require-dev": {
+    "wp-coding-standards/wpcs": "*",
+    "squizlabs/php_codesniffer": "^3.13",
+    "php-stubs/wordpress-stubs": "^6.8"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}
