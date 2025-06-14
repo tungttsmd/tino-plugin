@@ -11,7 +11,6 @@ class Plugin
 {
     public function __construct()
     {
-        Session::make();
         $enqueue = new EnqueueRegister();
         $shortcode = new ShortcodeRegister();
         $ajaxAction = new AsyncRegister();

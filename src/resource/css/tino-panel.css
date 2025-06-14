@@ -1,0 +1,104 @@
+#tino-container .contactList th,
+#tino-container .contactList td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-word;
+  max-width: 150px;
+  /* Tuỳ chỉnh theo từng cột */
+}
+
+#tino-container .tab-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#tino-container .tab-buttons button {
+  padding: 10px 20px;
+  border: 1px solid #0073aa;
+  background-color: white;
+  color: #0073aa;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#tino-container .tab-buttons button.active,
+#tino-container .tab-buttons button:hover {
+  background-color: #0073aa;
+  color: white;
+}
+#tino-container .orderList th,
+#tino-container .orderList td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+  word-break: break-word;
+}
+
+#tino-container .orderList .alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+#tino-container .orderList .alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+#tino-container .orderList .button-outline {
+  background: none;
+  border: 1px solid #007bff;
+  color: #007bff;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+#tino-container .orderList .button-quit {
+  background-color: #dc3545;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#tino-container .orderList .button-wrapper {
+  display: flex;
+}
+
+#tino-container .tab-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#tino-container .tab-buttons button {
+  padding: 10px 20px;
+  border: 1px solid #0073aa;
+  background-color: white;
+  color: #0073aa;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#tino-container .tab-buttons button.active,
+#tino-container .tab-buttons button:hover {
+  background-color: #0073aa;
+  color: white;
+}

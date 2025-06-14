@@ -2,18 +2,17 @@
 
 namespace Model;
 
-use Helper\Session;
+use Helper\Maker;
 use Repository\ApiClient;
 
 class Invoice extends ApiClient
 {
-
+    use Maker;
     // Constructor
     public function __construct()
     {
         $auth = new Auth(CONFIG_USERNAME, CONFIG_PASSWORD);
         parent::__construct($auth->token());
-        Session::make();
     }
 
     // Get

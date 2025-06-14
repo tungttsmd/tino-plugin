@@ -21,7 +21,9 @@
       "System\\": "src/system/"
     },
     "files": [
-      "config.php"
+      "config.php",
+      "src/app/Helper/Helper.php",
+      "src/resource/build.php"
     ]
   },
   "minimum-stability": "stable",

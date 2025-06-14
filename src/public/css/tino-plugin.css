@@ -1,0 +1,767 @@
+/* === tino-InputUiBlock.css === */
+#tino-container .uiBlock {
+  border: 1px solid green;
+  border-radius: 6px;
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  padding: 6px !important;
+  margin-bottom: 20px;
+}
+
+#tino-container .uiBlock input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  flex: 7;
+}
+
+#tino-container .uiBlock button {
+  background-color: #2e7d32;
+  color: ghostwhite;
+  border-radius: 4px;
+  padding: 10px;
+  flex: 3;
+  border: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+#tino-container .uiBlock button.inspectOrderButton {
+  background-color: green;
+}
+
+#tino-container .uiBlock button#invoiceRenderButtonId {
+  background-color: sandybrown;
+}
+
+#tino-container .uiBlock button:hover {
+  transform: scale(0.95);
+  opacity: 0.6;
+}
+
+#tino-container .uiBlock:hover {
+  border-color: #2e7d32;
+}
+
+#tino-container {
+  padding: 7px;
+}
+
+/* === tino-PaymentButton.css === */
+.button-pretty {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  margin-right: 20px;
+}
+
+.button-pretty:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+.button-outline {
+  padding: 10px 20px;
+  border: 2px solid #00c9ff;
+  border-radius: 8px;
+  background: white;
+  color: #00c9ff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button-outline:hover {
+  background: #00c9ff;
+  color: white;
+  transform: scale(1.05);
+}
+
+.button-reload {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button-quit {
+  padding: 10px 20px;
+  border: 2px solid rgb(254, 79, 79);
+  border-radius: 8px;
+  background: linear-gradient(to right, rgb(254, 79, 79), rgb(254, 216, 0));
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.button-quit:hover {
+  background: rgb(254, 79, 79);
+  color: white;
+  transform: scale(1.05);
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-wrapper a {
+  flex: 1 1 1;
+}
+
+
+/* === tino-SuggestionBar.css === */
+/* body {
+  font-family: Arial, sans-serif;
+  background: #f8fdff;
+  margin: 0;
+  padding: 20px;
+}  KHÔNG SỬ DỤNG BODY TRONG NÀY */
+
+.domain-list {
+  margin: auto;
+}
+
+.domain-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.domain-left {
+  text-align: right;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.domain-right .status.false {
+  background: rgb(245, 176, 163);
+  color: rgb(184, 11, 11);
+  border: none;
+  padding: 4px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.domain-left .status {
+  background: rgb(212, 245, 219);
+  color: rgb(0, 160, 35);
+  border: none;
+  padding: 4px 15px;
+  border-radius: 5px;
+}
+
+.domain-left a:hover {
+  opacity: 0.8;
+}
+
+.domain-name {
+  font-weight: bold;
+  font-size: 18px;
+}
+.domain-name.false {
+    text-decoration: line-through;
+}
+.status {
+  background: #d4f5e3;
+  color: #2e8b57;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  display: inline-block;
+  margin-top: 5px;
+  cursor: default !important;
+}
+
+.domain-right {
+  text-align: right;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.domain-right a {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 4px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.suggestionSelection:hover {
+  opacity: 0.6;
+  color: black;
+  background-color: orange;
+}
+
+.price {
+  color: #17a085;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+
+/* === tino-WaitSpinner.css === */
+#tino-container {
+  position: relative; /* Rất cần cho spinner bám vào */
+}
+#tino-container #spinnerDivCenter {
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  z-index: 100 !important;
+}
+#tino-container #spinner.active {
+  position: absolute;
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #00be00;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+#loadBar {
+  display: flex;
+  justify-content: start;
+  width: 100%;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+.suggestionLoader {
+  z-index: 10;
+  width: 100%;
+}
+
+.suggestionItem {
+  width: 32px;
+  height: 32px;
+  border: 5px solid #ddd;
+  border-top: 5px solid #00be00;
+  border-radius: 50%;
+  animation: spinSuggestion 0.8s linear infinite;
+  margin-right: 20px;
+}
+
+@keyframes spinSuggestion {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* === tino-alertBox.css === */
+#tino-container .alert {
+  position: relative;
+  padding: 0.75rem 1.25rem !important;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  z-index: 0 !important;
+}
+
+/* Các loại alert màu sắc khác nhau */
+#tino-container .alert-primary {
+  color: #004085;
+  background-color: #cce5ff;
+  border-color: #b8daff;
+}
+
+#tino-container .alert-secondary {
+  color: #383d41;
+  background-color: #e2e3e5;
+  border-color: #d6d8db;
+}
+
+#tino-container .alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+#tino-container .alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+#tino-container .alert-warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
+#tino-container .alert-info {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+}
+
+#tino-container .alert-light {
+  color: #818182;
+  background-color: #fefefe;
+  border-color: #fdfdfe;
+}
+
+#tino-container .alert-dark {
+  color: #1b1e21;
+  background-color: #d6d8d9;
+  border-color: #c6c8ca;
+}
+
+/* Nút đóng alert */
+#tino-container .alertClose {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.75rem 1.25rem;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+#tino-container .alertClose:hover {
+  opacity: 0.75;
+  scale: 1.2;
+  transform: translate(-12, -12);
+}
+#tino-container #alertBox {
+  transition: box-shadow 0.2s ease;
+}
+#tino-container #alertBox:hover {
+  box-shadow: 0px 0px 4px lightgrey;
+}
+
+#tino-container .alert.fade.show {
+  animation: opaciter 0.6s ease forwards;
+}
+
+#tino-container .alert.fade {
+  animation: reserver-opaciter 0.6s ease forwards;
+}
+
+@keyframes opaciter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes reserver-opaciter {
+  from {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+}
+
+
+/* === tino-contactForm.css === */
+/* Tối ưu form nhập thông tin */
+#tino-container .uiBlock.contactForm {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  background: white;
+  padding: 24px;
+  border: 1px solid lavenderblush;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  margin: auto;
+}
+
+#tino-container .uiBlock.contactForm h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #333;
+}
+
+#tino-container .uiBlock.contactForm label {
+  font-weight: 600;
+  margin-top: 10px;
+  color: #333;
+  font-size: 15px;
+}
+
+#tino-container .uiBlock.contactForm input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background: #f9f9f9;
+  transition: border-color 0.2s ease;
+}
+
+#tino-container .uiBlock.contactForm input:focus {
+  border-color: #5c1010;
+  box-shadow: 0 0 2px black;
+  outline: none;
+  background: white;
+}
+
+/* Nút ở dưới cùng */
+#tino-container .uiBlock.contactForm .button-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Responsive nếu cần */
+@media (max-width: 500px) {
+  #tino-container .uiBlock.contactForm .button-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+#tino-container .domain-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  border: none;
+}
+
+#tino-container .domain-summary-table th,
+#tino-container .domain-summary-table td {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  text-align: center;
+  border: none;
+}
+
+#tino-container .domain-summary-table thead {
+  background-color: #f8f8f8;
+  font-weight: bold;
+}
+
+#tino-container .domain-summary-table td strong {
+  color: #333;
+  font-size: 16px;
+}
+
+#tino-container .domain-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #2e7d32;
+  border-radius: 10px;
+  background-color: #fafafa;
+  font-family: Arial, sans-serif;
+}
+
+#tino-container .domain-form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+#tino-container .formInput {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+#tino-container .cccd-upload {
+  width: 100%;
+  text-align: left;
+}
+
+#tino-container .cccd-upload input[type="file"] {
+  border: none;
+  padding: 8px 0;
+}
+
+#tino-container .formInput.input-success {
+  background-color: #d4edda !important;
+  padding-right: 2em;
+  position: relative;
+}
+
+#tino-container .input-ok-icon {
+  color: #28a745;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+#tino-container .input-has-error {
+  background-color: #f8d7da !important;
+}
+
+
+/* === tino-panel.css === */
+#tino-container .contactList th,
+#tino-container .contactList td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-word;
+  max-width: 150px;
+  /* Tuỳ chỉnh theo từng cột */
+}
+
+#tino-container .tab-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#tino-container .tab-buttons button {
+  padding: 10px 20px;
+  border: 1px solid #0073aa;
+  background-color: white;
+  color: #0073aa;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#tino-container .tab-buttons button.active,
+#tino-container .tab-buttons button:hover {
+  background-color: #0073aa;
+  color: white;
+}
+#tino-container .orderList th,
+#tino-container .orderList td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+  word-break: break-word;
+}
+
+#tino-container .orderList .alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+#tino-container .orderList .alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+#tino-container .orderList .button-outline {
+  background: none;
+  border: 1px solid #007bff;
+  color: #007bff;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+#tino-container .orderList .button-quit {
+  background-color: #dc3545;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#tino-container .orderList .button-wrapper {
+  display: flex;
+}
+
+#tino-container .tab-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#tino-container .tab-buttons button {
+  padding: 10px 20px;
+  border: 1px solid #0073aa;
+  background-color: white;
+  color: #0073aa;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#tino-container .tab-buttons button.active,
+#tino-container .tab-buttons button:hover {
+  background-color: #0073aa;
+  color: white;
+}
+
+
+/* === tino-print.css === */
+#tino-container #printView {
+  border: 2px solid #444;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+#tino-container #printView:hover {
+  box-shadow: 0 0 20px rgba(0, 128, 255, 0.2);
+  border-color: #0077cc;
+}
+
+#tino-container #printView table.border {
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+#tino-container #printView table.border td,
+#tino-container #printView table.border th {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+#tino-container #printView .invoice-table-transaction tr:hover {
+  background-color: rgb(88, 241, 152);
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+@media print {
+  #tino-container #printView {
+    border: 1px solid #000;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 15px;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #tino-container #printView,
+  #tino-container #printView * {
+    visibility: visible;
+  }
+
+  #tino-container #printView {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
+#tino-container table.border th,
+#tino-container table.border td {
+  border: 1px solid #ccc;
+}
+
+#tino-container table.border th {
+  background-color: #f8f8f8;
+}
+
+#tino-container table.border td {
+  vertical-align: top;
+}
+
+@media print {
+  #tino-container table.border {
+    border: 1px solid #000;
+  }
+}
+
+#tino-container table.borderless {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  border: none !important;
+}
+
+#tino-container table.borderless td,
+#tino-container table.borderless th {
+  border: 1px solid #ccc !important;
+}
+
+#tino-container table.borderless tr:first-child th {
+  border-top: none !important;
+}
+
+/* #tino-container table.borderless tr:last-child td {
+    border-bottom: none !important;
+} */
+
+#tino-container table.borderless tr td:first-child,
+#tino-container table.borderless tr th:first-child {
+  border-left: none !important;
+}
+
+#tino-container table.borderless tr td:last-child,
+#tino-container table.borderless tr th:last-child {
+  border-right: none !important;
+}
+
+

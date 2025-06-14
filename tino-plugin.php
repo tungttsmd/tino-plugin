@@ -1,4 +1,7 @@
 <?php
+
+use Model\Domain;
+
 /**
  * Plugin Name: Tino plugin
  * Description: Dùng shortcode [webo_bang_gia] để lấy bảng giá tên miền; [webo_dang_ky] để lấy form đăng ký tên miền
@@ -13,5 +16,6 @@ if (!defined('ABSPATH')) {
 }
 
 require plugin_dir_path(__FILE__) . "vendor/autoload.php";
+
 
 $plugin = new Includes\Plugin();

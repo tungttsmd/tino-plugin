@@ -2,9 +2,7 @@
 
 namespace Controller;
 
-use Action\RenderAction;
 use Helper\Maker;
-use Helper\Tool;
 use Model\Contact;
 use Model\Domain;
 use Model\Invoice;
@@ -12,39 +10,18 @@ use Model\Invoice;
 class AsyncController
 {
     use Maker;
-    public function invoiceIdLookup($domainName)
+    public function fetchDomainInspect()
     {
-        $domain = new Domain();
-        $invoice = new Invoice();
-        $orderID = $domain->getOrderIdByName($domainName);
-
-        // Phía server https://my.tino.vn/api nếu tìm kiếm hoá đơn lần đầu sẽ trả null -> kiểm tra thêm 2 lần để fix lỗi này
-        $retry = 0;
-        $invoiceId = null;
-        while ($retry < 2) {
-            $invoiceId = $invoice->getInvoiceIdByOrderId($orderID);
-            if ($invoiceId !== null) {
-                break;
-            }
-            $retry++;
-        }
-        return $invoiceId;
-    }
-    public function domainInspect($domainName)
-    {
-        $domain = new Domain();
-        $inspectInfo = $domain->domainInspect($domainName);
-        $html = RenderAction::make()->inspectFormRender();
-        $json = [
+        $json = Domain::make()->domainInspect($_POST['domain']);
+        $html = view("form/domainInspect.php", [], true);
+        return [
             'success' => true,
             'html' => $html,
-            'json' => $inspectInfo
+            'json' => $json
         ];
-        return $json;
     }
-    public function domainToOrder($domainName, $contactAccessId, $nameservers)
+    public function fetchDomainToOrder()
     {
-        $domain = new Domain();
         /**
          * Có 3 loại contact id.
          * - Access id: dùng để lấy parent_id, client_id và fetch toàn bộ thông tin liên hệ
@@ -55,31 +32,32 @@ class AsyncController
          *      + admin: thông tin người quản trị tên miền ---> đặt theo webo.vn của bản thân mình (giúp khách quản trị)
          * - Parent id: giống như client id nhưng là thông tin của chủ tài khoản đặt mua hộ tên miền
          */
-        $orderInfo = $domain->domainToOrder($domainName, $contactAccessId, json_decode(stripslashes($nameservers)));
-        $json = [
+        $data_nameservers = json_decode(stripslashes($_POST['nameservers']));
+        $json = Domain::make()->domainToOrder($_POST['domain'], $_POST['contact_id'], $data_nameservers);
+        return [
             'success' => true,
-            'json' => $orderInfo
+            'json' => $json
         ];
-        return $json;
     }
-    public function contactCreateNew($contactForm)
+    public function fetchContactCreate()
     {
-        $contact = new Contact();
-        $contactStatusPackage = $contact->createNew($contactForm);
-        $json = [
+        // Dữ liệu trả về là một json đã bị encode 2 lần, 1 submit form encode (URLparams...) và 1 json string (javascript) endcode
+        $data_contact = json_decode(stripslashes($_POST['contactInfoPackage']), true);
+        $json = Contact::make()->createNew($data_contact);
+        return [
             'success' => true,
-            'json' => $contactStatusPackage,
+            'json' => $json,
         ];
-        return $json;
     }
-    public function invoiceStatusChecker($invoice_checker_id)
+    public function fetchInvoiceInspect()
     {
-        $invoice = new Invoice();
-        $invoiceStatus = $invoice->getPaymentStatus($invoice_checker_id);
+        $data_invoice = Invoice::make()->getPaymentStatus($_POST['invoice_checker_id']);
         $json = [
-            'success' => true,
-            'json' => ["status" => $invoiceStatus->status],
+            "status" => $data_invoice->status
         ];
-        return $json;
+        return [
+            'success' => true,
+            'json' => $json,
+        ];
     }
 }

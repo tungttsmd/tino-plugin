@@ -41,8 +41,6 @@ class Contact extends ApiClient
     public function getClientIdByAccessId(string|int $access_id)
     {
         $clientIdList = $this->getClientIdList();
-
-
         foreach ($clientIdList as $accessIdFromList => $clientId) {
             if ($accessIdFromList === (int) $access_id) {
                 return $clientId;
@@ -118,7 +116,7 @@ class Contact extends ApiClient
                 $store[] = rtrim(rtrim($error,  "error"), "_");
             }
         }
-        $store = Tool::oopstd($store);
+        $store = std($store);
         $data = [];
         foreach ($store as $value) {
             // Bước 1: thay thế kí tự tiếng việt (nếu có)

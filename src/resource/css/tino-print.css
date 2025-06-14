@@ -1,0 +1,104 @@
+#tino-container #printView {
+  border: 2px solid #444;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+#tino-container #printView:hover {
+  box-shadow: 0 0 20px rgba(0, 128, 255, 0.2);
+  border-color: #0077cc;
+}
+
+#tino-container #printView table.border {
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+#tino-container #printView table.border td,
+#tino-container #printView table.border th {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+#tino-container #printView .invoice-table-transaction tr:hover {
+  background-color: rgb(88, 241, 152);
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+@media print {
+  #tino-container #printView {
+    border: 1px solid #000;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 15px;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #tino-container #printView,
+  #tino-container #printView * {
+    visibility: visible;
+  }
+
+  #tino-container #printView {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
+#tino-container table.border th,
+#tino-container table.border td {
+  border: 1px solid #ccc;
+}
+
+#tino-container table.border th {
+  background-color: #f8f8f8;
+}
+
+#tino-container table.border td {
+  vertical-align: top;
+}
+
+@media print {
+  #tino-container table.border {
+    border: 1px solid #000;
+  }
+}
+
+#tino-container table.borderless {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  border: none !important;
+}
+
+#tino-container table.borderless td,
+#tino-container table.borderless th {
+  border: 1px solid #ccc !important;
+}
+
+#tino-container table.borderless tr:first-child th {
+  border-top: none !important;
+}
+
+/* #tino-container table.borderless tr:last-child td {
+    border-bottom: none !important;
+} */
+
+#tino-container table.borderless tr td:first-child,
+#tino-container table.borderless tr th:first-child {
+  border-left: none !important;
+}
+
+#tino-container table.borderless tr td:last-child,
+#tino-container table.borderless tr th:last-child {
+  border-right: none !important;
+}

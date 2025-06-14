@@ -4,8 +4,6 @@ namespace Model;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Helper\Maker;
-use Helper\Session;
-use Helper\Tool;
 use Repository\ApiClient;
 use RuntimeException;
 
@@ -25,7 +23,6 @@ class Domain extends ApiClient
         $auth = new Auth(CONFIG_USERNAME, CONFIG_PASSWORD);
         parent::__construct($auth->token());
 
-        Session::make(); // Class có dùng $_SESSION -> khởi tạo
         $this->searchList = $this->loadSearchListFromSession();
         $this->codePack = $this->loadCodePack();
         $this->orderList = new \stdClass;
@@ -56,11 +53,11 @@ class Domain extends ApiClient
     }
     public function loadSearchListFromSession()
     {
-        return $_SESSION['tino_search_list'] ?? [];
+        return session_get("tino_search_list") ?? [];
     }
     public function loadCartListFromSession()
     {
-        return $_SESSION['tino_cart_list'] ?? [];
+        return session_get("tino_cart_list") ?? [];
     }
 
     // Get
@@ -150,16 +147,17 @@ class Domain extends ApiClient
             $domainName = trim(strtolower($domainName));
 
             // Check if expired
-            $isExpired = isset($_SESSION['tino_search_list_expired_time']) &&
-                (time() > $_SESSION['tino_search_list_expired_time']);
+            $sessionSearchList = session_get("tino_search_list_expired_time");
+            $isExpired = isset($sessionSearchList) && (time() > $sessionSearchList);
 
             if ($isExpired) {
-                unset($_SESSION['tino_search_list']);
-                unset($_SESSION['tino_search_list_expired_time']);
+                session_remove("tino_search_list");
+                session_remove("tino_search_list_expired_time");
             }
 
             // Check if already searched
-            $hasSession = isset($_SESSION['tino_search_list'][$domainName]);
+            $sessionDomainName = session_get("tino_search_list.$domainName");
+            $hasSession = isset($sessionDomainName);
 
             if (!$hasSession) {
                 // Call API
@@ -170,11 +168,11 @@ class Domain extends ApiClient
                     ]
                 ]);
                 $this->searchList[$domainName] = $response;
-                $_SESSION['tino_search_list'][$domainName] = $response;
-                $_SESSION['tino_search_list_expired_time'] = time() + 5 * 60;
+                session_set("tino_search_list.$domainName", $response);
+                session_set("tino_search_list_expired_time", time() + 5 * 60);
             } else {
                 // Restore from session
-                $this->searchList[$domainName] = $_SESSION['tino_search_list'][$domainName];
+                $this->searchList[$domainName] = session_get("tino_search_list.$domainName");
             }
 
             return $this;
@@ -217,7 +215,7 @@ class Domain extends ApiClient
 
         if (!isset($domainName) || empty($domainName)) {
             // 0. Ngừa lỗi nội bộ không nhập domainName
-            $_SESSION['tino_inspect_save'] = [
+            session_set("tino_inspect_save", [
                 'session_name'     => 'tino_inspect_save',
                 'is_in_my_cart'    => false,
                 'invoice_id'       => null,
@@ -234,15 +232,15 @@ class Domain extends ApiClient
                     'code' => empty(trim(strtolower($domainName))) ? $_300['code'] : $_301['code'],
                     'message' => 'Domain inspect: Domain input is not valid, please check again.',
                 ],
-            ];
-            return $_SESSION['tino_inspect_save'];
+            ]);
+            return session_get("tino_inspect_save");
         }
 
         $domainLookup = $this->lookup(trim(strtolower($domainName)));
 
         if (isset($domainLookup->error)) {
             // 1. Nếu lookup tìm name domain không hợp lệ
-            $_SESSION['tino_inspect_save'] = [
+            session_set("tino_inspect_save", [
                 'session_name'     => 'tino_inspect_save',
                 'is_in_my_cart'    => false,
                 'invoice_id'       => null,
@@ -261,8 +259,8 @@ class Domain extends ApiClient
 
                 ]
 
-            ];
-            return $_SESSION['tino_inspect_save'];
+            ]);
+            return session_get("tino_inspect_save");
         }
 
         // Phản hồi API tino về kiểm tra my cart order thường hay bị lỗi, phải kiểm tra ở phía ngoài lần để khắc phục
@@ -270,7 +268,7 @@ class Domain extends ApiClient
         if (!empty(get_object_vars($isInMyCart))) {
             // 2. Nếu domain đã trong giỏ hàng
             $invoiceDetail = $this->invoiceModel->fetchInvoiceByOrderId($isInMyCart->id);
-            $_SESSION['tino_inspect_save'] = [
+            session_set("tino_inspect_save", [
                 'session_name'     => 'tino_inspect_save',
                 'is_in_my_cart'    => true,
                 'invoice_id'       => $invoiceDetail->id,
@@ -287,11 +285,11 @@ class Domain extends ApiClient
                     'code' => $_200['code'],
                     'message' => 'Domain inspect: This domain is in our cart! Return is domain order invoice information.'
                 ]
-            ];
+            ]);
         } else {
             $totalPrice = $domainLookup->tld_id === "567" ? 450000 : $domainLookup->periods[0]->register;
             // 3. Không trong giỏ hàng -> Kiểm tra trạng thái
-            $_SESSION['tino_inspect_save'] = [
+            session_set("tino_inspect_save", [
                 'session_name'      => 'tino_inspect_save',
                 'is_in_my_cart'     => false,
                 'invoice_id'        => null,
@@ -309,12 +307,12 @@ class Domain extends ApiClient
                     'message' => 'Domain inspect: This domain is not in our cart! Return is domain lookup information.'
                 ],
                 '_100_status_anti_csrf'  => [
-                    'domain_name' => $domainLookup->status === "ok" ? $_SESSION['_100_status_anti_csrf_domain_name'] = $domainLookup->name : false,
+                    'domain_name' => $domainLookup->status === "ok" ? $domainLookup->name : false,
                     'domain_total' => number_format($totalPrice, 0, ',', '.')
                 ]
-            ];
+            ]);
         }
-        return $_SESSION['tino_inspect_save'];
+        return session_get("tino_inspect_save");
     }
 
     /**
@@ -340,7 +338,7 @@ class Domain extends ApiClient
 
         if (!isset($domainName) || empty($domainName)) {
             // 0. Ngừa lỗi nội bộ không nhập domainName
-            $_SESSION['tino_inspect_save'] = [
+            session_set("tino_inspect_save", [
                 'session_name'     => 'tino_inspect_save',
                 'is_in_my_cart'    => false,
                 'invoice_id'       => null,
@@ -358,7 +356,7 @@ class Domain extends ApiClient
                     'message' => 'Domain inspect: Domain input is not valid, please check again.',
                 ],
                 'order_error' => 'ORDER ERROR: Ordered failed, EMPTY DOMAIN INPUT?'
-            ];
+            ]);
         }
 
         // Lưu ý $domainName phải là một biến sạch, tức đã trải qua lookup rồi từ lookup->name (dùng set này để đảm bảo sạch)
@@ -380,8 +378,8 @@ class Domain extends ApiClient
                 ],
             ];
             // Client contact là chủ sở hữu tên miền và xác thực theo đó, parent là chủ tài khoản đăng nhập my.tino.vn để mua hộ tên miền
-            $clientContactId = Tool::make()->oopstd(Contact::make()->getClientIdByAccessId($contactAccessId));
-            $parentContactId = Tool::make()->oopstd(mixList: Contact::make()->getLoggedInContactId());
+            $clientContactId = Contact::make()->getClientIdByAccessId($contactAccessId);
+            $parentContactId = Contact::make()->getLoggedInContactId();
             if ($contactAccessId) {
                 // Nếu người dùng điền đầy đủ thông tin
                 $options['json']['registrant'] = (int) $clientContactId;  // Chủ thể sở hữu tên miền (người thực hiện mua)
@@ -395,7 +393,7 @@ class Domain extends ApiClient
                 if (!isset($response->error)) {
                     // API Tino thường sẽ tạo trễ invoice sau khi mới order này.
                     $invoiceDetail = $this->invoiceModel->getInvoiceById($response->invoice_id);
-                    $_SESSION['tino_to_order_save'] = [
+                    session_set("tino_to_order_save", [
                         'session_name'      => 'tino_to_order_save',
                         'is_in_my_cart'     => true,
                         'invoice_id'        => $response->invoice_id,
@@ -413,7 +411,7 @@ class Domain extends ApiClient
                             'message' => 'Domain inspect: Domain input is not valid, please check again.',
                         ],
                         'order_error'      => 'Ordered successfully! Return is the ordered information'
-                    ];
+                    ]);
                 } else {
                     // Trường hợp order không thành công (do status không ok) nên chuyển sang lookup để kiểm tra nội dung gì
                     return array_merge($domainInspect, [
@@ -422,7 +420,8 @@ class Domain extends ApiClient
                 }
 
                 // debug backup = $_SESSION['tino_to_order_save'] only
-                return array_merge($_SESSION['tino_to_order_save'], ['orderInfo' => $this->fetchOrderById($_SESSION['tino_to_order_save']['order_id'])]);
+                // return array_merge($_SESSION['tino_to_order_save'], ['orderInfo' => $this->fetchOrderById($_SESSION['tino_to_order_save']['order_id'])]);
+                return session_get("tino_to_order_save");
             } catch (GuzzleException $e) {
                 // Ném lỗi trong quá trình lấy danh sách domain trong giỏ hàng của tài khoản
                 throw new RuntimeException('Domain data invalid or missing periods/tld_id: ' . $e->getMessage());
@@ -430,7 +429,7 @@ class Domain extends ApiClient
         } else {
             // Nếu domain không available để đặt hàng hoặc đã được hệ thống đặt hàng từ trước, thì lấy kết quả của inspect để trả về
             return array_merge($domainInspect, [
-                '   '      => 'ORDER ERROR: status = ' . $domainInspect['status'] . ' - Ordered failed, this domain is not available to order or ordered before! Converted Domain Inspect mode: Return is the domain lookup information'
+                'order_error' => 'ORDER ERROR: status = ' . $domainInspect['status'] . ' - Ordered failed, this domain is not available to order or ordered before! Converted Domain Inspect mode: Return is the domain lookup information'
             ]);
         }
     }

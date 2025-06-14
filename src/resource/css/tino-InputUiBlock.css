@@ -1,0 +1,47 @@
+#tino-container .uiBlock {
+  border: 1px solid green;
+  border-radius: 6px;
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  padding: 6px !important;
+  margin-bottom: 20px;
+}
+
+#tino-container .uiBlock input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  flex: 7;
+}
+
+#tino-container .uiBlock button {
+  background-color: #2e7d32;
+  color: ghostwhite;
+  border-radius: 4px;
+  padding: 10px;
+  flex: 3;
+  border: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+#tino-container .uiBlock button.inspectOrderButton {
+  background-color: green;
+}
+
+#tino-container .uiBlock button#invoiceRenderButtonId {
+  background-color: sandybrown;
+}
+
+#tino-container .uiBlock button:hover {
+  transform: scale(0.95);
+  opacity: 0.6;
+}
+
+#tino-container .uiBlock:hover {
+  border-color: #2e7d32;
+}
+
+#tino-container {
+  padding: 7px;
+}

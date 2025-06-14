@@ -11,4 +11,6 @@ return array(
     '37a3dc5111fe8f707ab4c132ef1dbc62' => $vendorDir . '/guzzlehttp/guzzle/src/functions_include.php',
     'a4a119a56e50fbb293281d9a48007e0e' => $vendorDir . '/symfony/polyfill-php80/bootstrap.php',
     '522e858f13164f2f391175f1b30ddd13' => $baseDir . '/config.php',
+    'ec760b3974371133d722d48e64a06b77' => $baseDir . '/src/app/Helper/Helper.php',
+    '9494f4021085fa974f567118ceb977b6' => $baseDir . '/src/resource/build.php',
 );

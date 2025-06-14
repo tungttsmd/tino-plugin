@@ -19,13 +19,10 @@ class Auth
     // Constructor
     public function __construct($username, $password)
     {
-        // 1. Khởi tạo session
-        Session::make(); // Class có dùng $_SESSION -> khởi tạo
-
-        // 2. Nạp dữ liệu
+        // 1. Nạp dữ liệu
         $this->authenLogin($username, $password);
 
-        // 3. Xác thực & lưu trữ thông tin xác thực vào Session tái sử dụng
+        // 2. Xác thực & lưu trữ thông tin xác thực vào Session tái sử dụng
         $this->authenToken();
     }
 
@@ -46,18 +43,20 @@ class Auth
         try {
             // A. Condition
             $flag = true;
-            if ($flag && (isset($_SESSION['tino_authentication_expired_time']) && (time() > $_SESSION['tino_authentication_expired_time']))) {
+            $sessionTime = session_get("tino_authentication_expired_time");
+            if ($flag && (isset($sessionTime) && (time() > $sessionTime))) {
                 $flag = false;
-                unset($_SESSION['tino_authentication']); // Token hết hạn rồi
-                unset($_SESSION['tino_authentication_expired_time']);
+                session_remove("tino_authentication"); // Token hết hạn rồi
+                session_remove("tino_authentication_expired_time"); // Token hết hạn rồi
             }
-            if ($flag && (!isset($_SESSION['tino_authentication']) || !is_object($_SESSION['tino_authentication']))) {
+            $sessionAuthentication = session_get("tino_authentication");
+            if ($flag && (!isset($sessionAuthentication) || !is_object($sessionAuthentication))) {
                 $flag = false;
             }
             // B. Logic
             if ($flag) {
                 // 0. Tái sử dụng dữ liệu xác thực từ SESSION
-                $this->response = $_SESSION['tino_authentication'];
+                $this->response = session_get("tino_authentication");
             } else {
                 // 1. Dùng Tino API Endpoint Login để Xác thực
                 $endpoint = "login";
@@ -70,8 +69,8 @@ class Auth
                 // 2. Lưu dữ liệu đăng nhập
                 $json = $response->getBody()->getContents();
                 $this->response = json_decode($json);
-                $_SESSION['tino_authentication'] = $this->response;
-                $_SESSION['tino_authentication_expired_time'] = time() + 5 * 60; // 5 phút mới lấy token mới -> tránh spam token
+                session_set("tino_authentication", $this->response);
+                session_set("tino_authentication_expired_time", time() + 5 * 60); // 5 phút mới lấy token mới -> tránh spam token
             }
         } catch (GuzzleException $e) {
             // 3. Ném lỗi trong quá trình xác thực
@@ -94,7 +93,7 @@ class Auth
     }
     public function refresh()
     {
-        unset($_SESSION['tino_authentication']);
+        session_remove("tino_authentication");
         return $this;
     }
 }
