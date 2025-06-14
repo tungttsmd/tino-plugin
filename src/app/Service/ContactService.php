@@ -14,9 +14,9 @@ class ContactService
         $this->contactModel = new Contact();
     }
 
-    public function contactList()
+    public function fetchContactList()
     {
-        $response = $this->contactModel->contactList();
+        $response = $this->contactModel->fetchContactList();
         return $response;
     }
 }

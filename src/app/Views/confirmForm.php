@@ -13,13 +13,13 @@
                 <thead>
                     <tr>
                         <th>Tên miền</th>
-                        <th>Hạn dùng</th>
                         <th>Tổng tiền</th>
+                        <th>Hạn dùng</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong><?= $data->domain_name ?? 'Tên miền không hợp lệ' ?></strong></td>
+                        <td id="confirmFormDomainName"><strong><?= $data->domain_name ?? null ?></strong></td>
                         <td><strong><?= $data->domain_total ?? '0' ?> đ</strong></td>
                         <td><strong>01 năm</strong></td>
                     </tr>

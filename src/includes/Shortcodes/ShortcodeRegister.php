@@ -6,6 +6,7 @@ use Includes\Shortcodes\Invoice as ShortcodesInvoice;
 use Includes\Shortcodes\Pricing as ShortcodesPricing;
 use Includes\Shortcodes\Order as ShortcodesOrder;
 use Includes\Shortcodes\Confirm as ShortcodesConfirm;
+use Includes\Shortcodes\Panel as ShortcodesPanel;
 
 class ShortcodeRegister
 {
@@ -15,6 +16,7 @@ class ShortcodeRegister
         add_shortcode('webo_dang_ky', [$this, 'shortcodeOrder']);
         add_shortcode('webo_hoa_don', [$this, 'shortcodeInvoice']);
         add_shortcode('webo_dat_hang', [$this, 'shortcodeConfirm']);
+        add_shortcode('webo_domain_panel', [$this, 'shortcodePanel']);
     }
     function shortcodePricing()
     {
@@ -36,7 +38,13 @@ class ShortcodeRegister
     function shortcodeConfirm()
     {
         ob_start();
-        $confỉrm = new ShortcodesConfirm();
+        $confirm = new ShortcodesConfirm();
+        return ob_get_clean();
+    }
+    function shortcodePanel()
+    {
+        ob_start();
+        $dashboard = new ShortcodesPanel();
         return ob_get_clean();
     }
 }

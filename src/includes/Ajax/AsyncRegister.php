@@ -16,6 +16,8 @@ class AsyncRegister
         add_action('wp_ajax_nopriv_ajaxDomainToOrder', [$this, 'ajaxDomainToOrder_callback']); // Dành cho người dùng không đăng nhập
         add_action('wp_ajax_ajaxContactCreate', [$this, 'ajaxContactCreate_callback']);
         add_action('wp_ajax_nopriv_ajaxContactCreate', [$this, 'ajaxContactCreate_callback']); // Dành cho người dùng không đăng nhập
+        add_action('wp_ajax_ajaxInvoiceChecker', [$this, 'ajaxInvoiceChecker_callback']);
+        add_action('wp_ajax_nopriv_ajaxInvoiceChecker', [$this, 'ajaxInvoiceChecker_callback']); // Dành cho người dùng không đăng nhập
     }
 
     /**
@@ -53,7 +55,7 @@ class AsyncRegister
     public function ajaxDomainToOrder_callback()
     {
         $ajax = new AsyncController();
-        $domainToOrder = $ajax->domainToOrder($_POST['domain'], CONFIG_NAMESERVERS);
+        $domainToOrder = $ajax->domainToOrder($_POST['domain'], $_POST['contact_id'], $_POST['nameservers']);
         wp_send_json($domainToOrder);
     }
 
@@ -66,5 +68,11 @@ class AsyncRegister
         $ajax = new AsyncController();
         $contactCreateReturn = $ajax->contactCreateNew($_POST['contactInfoPackage']);
         wp_send_json($contactCreateReturn);
+    }
+    public function ajaxInvoiceChecker_callback()
+    {
+        $ajax = new AsyncController();
+        $invoiceStatus = $ajax->invoiceStatusChecker($_POST['invoice_checker_id']);
+        wp_send_json($invoiceStatus);
     }
 }

@@ -24,6 +24,13 @@ class Invoice extends ApiClient
         $response = $this->call($endpoint, 'get');
         return $response->invoices;
     }
+    public function fetchInvoiceById(string|int|float $invoiceId)
+    {
+        $endpoint = "invoice/" . (int) $invoiceId;
+        $response = $this->call($endpoint, "get");
+        return $response;
+    }
+
     public function invoiceIdListing()
     {
         // Lấy danh sách toàn bộ id invoice trong giỏ hàng
@@ -40,6 +47,10 @@ class Invoice extends ApiClient
         $invoiceID = $this->getInvoiceIdByOrderId($orderId);
         $invoiceDetail = $this->getInvoiceById($invoiceID);
         return $invoiceDetail;
+    }
+    public function getPaymentStatus(string|int|float $invoiceId)
+    {
+        return $this->fetchInvoiceById($invoiceId)->invoice;
     }
     public function getInvoiceIdByOrderId(string|int|float $orderId)
     {

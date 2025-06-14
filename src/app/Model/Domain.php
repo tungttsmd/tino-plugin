@@ -3,12 +3,15 @@
 namespace Model;
 
 use GuzzleHttp\Exception\GuzzleException;
+use Helper\Maker;
 use Helper\Session;
+use Helper\Tool;
 use Repository\ApiClient;
 use RuntimeException;
 
 class Domain extends ApiClient
 {
+    use Maker;
     private $searchList;
     private $orderList;
     private $domainNameChain;
@@ -330,7 +333,7 @@ class Domain extends ApiClient
      * - status not ok
      *  + convert to inspect mode, return as domainInspect() + message of ORDER ERROR
      */
-    public function domainToOrder(string $domainName, array|object $nameservers)
+    public function domainToOrder(string $domainName, string|int|float|null $contactAccessId = null, array|object|null $nameservers = null)
     {
         $codePack = $this->codePack;
         extract($codePack);
@@ -362,7 +365,7 @@ class Domain extends ApiClient
         $domainInspect = $this->domainInspect(trim(strtolower($domainName)));
 
         if (isset($domainInspect['status'], $domainInspect['is_in_my_cart']) && $domainInspect['status'] === "ok" && $domainInspect['is_in_my_cart'] === false) {
-            $endpoint = "domain/order";
+
             $options  = [
                 'json' => [
                     'name' => $domainInspect['domain_name'],
@@ -370,10 +373,24 @@ class Domain extends ApiClient
                     'action' => 'register',
                     'tld_id' =>  $domainInspect['tld_id'],
                     'pay_method' => '70',
-                    'nameservers' => (array) $nameservers,
+                    'nameservers' => (array) $nameservers ?? [],
+                    // "admin" => "adminValue",
+                    // "tech" => "techValue",
+                    // "billing" => "billingValue",
                 ],
             ];
+            // Client contact là chủ sở hữu tên miền và xác thực theo đó, parent là chủ tài khoản đăng nhập my.tino.vn để mua hộ tên miền
+            $clientContactId = Tool::make()->oopstd(Contact::make()->getClientIdByAccessId($contactAccessId));
+            $parentContactId = Tool::make()->oopstd(mixList: Contact::make()->getLoggedInContactId());
+            if ($contactAccessId) {
+                // Nếu người dùng điền đầy đủ thông tin
+                $options['json']['registrant'] = (int) $clientContactId;  // Chủ thể sở hữu tên miền (người thực hiện mua)
+                $options['json']['admin'] = (int) $clientContactId;   // Chủ thể sở hữu tên miền tự quản lý tên miền (người thực hiện mua)
+                $options['json']['billing'] = (int) $clientContactId;   // Thông tin hoá đơn theo chủ thể sở hữu (người thực hiện mua)
+                $options['json']['tech'] = (int) $parentContactId;  // Chủ tài khoản my.tino.vn được phép hỗ trợ kỹ thuật (quyền admin domain) (người mua hộ)
+            };
             try {
+                $endpoint = "domain/order";
                 $response = $this->call($endpoint, "post", $options);
                 if (!isset($response->error)) {
                     // API Tino thường sẽ tạo trễ invoice sau khi mới order này.
@@ -403,7 +420,9 @@ class Domain extends ApiClient
                         'order_error' => 'ORDER ERROR: ' . $response->error[0] . ' - Ordered failed! Converted Domain Inspect mode: Return is the domain lookup information'
                     ]);
                 }
-                return $_SESSION['tino_to_order_save'];
+
+                // debug backup = $_SESSION['tino_to_order_save'] only
+                return array_merge($_SESSION['tino_to_order_save'], ['orderInfo' => $this->fetchOrderById($_SESSION['tino_to_order_save']['order_id'])]);
             } catch (GuzzleException $e) {
                 // Ném lỗi trong quá trình lấy danh sách domain trong giỏ hàng của tài khoản
                 throw new RuntimeException('Domain data invalid or missing periods/tld_id: ' . $e->getMessage());

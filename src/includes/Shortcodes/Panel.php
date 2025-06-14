@@ -2,14 +2,12 @@
 
 namespace Includes\Shortcodes;
 
-use App\Actions\OrderAction;
-use App\Controllers\OrderController;
 use Controller\SyncController;
 
-class Order
+class Panel
 {
     public function __construct()
     {
-        SyncController::make()->panel();
+        echo SyncController::make()->panel();
     }
 }

@@ -9,6 +9,15 @@ jQuery(document).on("click", ".contactCreateNew", function (event) {
   contactCreateNew.call(this, event);
 });
 
+// Gắn hàm chạy kiểm tra hoá đơn
+jQuery(document).ready(function () {
+  // Nếu tồn tại phần tử có class .invoiceCheckerId trong DOM thì gọi hàm
+  if (jQuery(".invoiceCheckerId").length > 0) {
+    invoiceStatusInspect();
+    console.log("Hello");
+  }
+});
+
 // Nút đóng alert
 jQuery(document).on("click", ".alertClose", function () {
   const $alert = jQuery(this).closest(".alert");

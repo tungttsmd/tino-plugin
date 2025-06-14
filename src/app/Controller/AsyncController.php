@@ -42,14 +42,22 @@ class AsyncController
         ];
         return $json;
     }
-    public function domainToOrder($domainName, $nameservers)
+    public function domainToOrder($domainName, $contactAccessId, $nameservers)
     {
         $domain = new Domain();
-        $orderInfo = $domain->domainToOrder($domainName, $nameservers);
-        $html = RenderAction::make()->inspectFormRender();
+        /**
+         * Có 3 loại contact id.
+         * - Access id: dùng để lấy parent_id, client_id và fetch toàn bộ thông tin liên hệ
+         * - Client id: dùng để thao tác đặt hàng và gắn vào đơn hàng
+         *      + registrant: chủ thể sở hữu tên miền (liên quan tới sở hữu) ---> phải đặt theo khách hàng đăng ký
+         *      + billing: thông tin người thanh toán ---> phải đặt theo khách hàng đăng ký
+         *      + tech: thông tin kỹ thuật viên về tên miền (custom) ---> đặt theo webo.vn của bản thân mình (giúp khách kỹ thuật)
+         *      + admin: thông tin người quản trị tên miền ---> đặt theo webo.vn của bản thân mình (giúp khách quản trị)
+         * - Parent id: giống như client id nhưng là thông tin của chủ tài khoản đặt mua hộ tên miền
+         */
+        $orderInfo = $domain->domainToOrder($domainName, $contactAccessId, json_decode(stripslashes($nameservers)));
         $json = [
             'success' => true,
-            'html' => $html,
             'json' => $orderInfo
         ];
         return $json;
@@ -61,6 +69,16 @@ class AsyncController
         $json = [
             'success' => true,
             'json' => $contactStatusPackage,
+        ];
+        return $json;
+    }
+    public function invoiceStatusChecker($invoice_checker_id)
+    {
+        $invoice = new Invoice();
+        $invoiceStatus = $invoice->getPaymentStatus($invoice_checker_id);
+        $json = [
+            'success' => true,
+            'json' => ["status" => $invoiceStatus->status],
         ];
         return $json;
     }

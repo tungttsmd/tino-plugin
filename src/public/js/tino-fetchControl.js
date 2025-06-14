@@ -179,15 +179,42 @@ function contactCreateNew(event) {
           firstItem !== null &&
           firstItem.contact_id
         ) {
-          const url = "https://google.com";
           // Xoá toàn bộ thông báo lỗi và class trạng thái cũ
           jQuery(".input-error").remove();
           jQuery(".formInput")
             .removeClass("input-success input-has-error")
             .siblings(".input-ok-icon")
             .remove();
-          // contact_id có giá trị hợp lệ => mở tab mới
-          window.open(url, "_blank");
+          let confirmFormNameservers = [];
+
+          jQuery("[id^='customerNameserver']").each(function () {
+            let val = jQuery(this).val().trim();
+            if (val) {
+              confirmFormNameservers.push(val);
+            }
+          });
+          let confirmFormDomainName = jQuery("#confirmFormDomainName")
+            .text()
+            .trim();
+          $confirm = confirm(
+            "Bạn có chắc muốn đặt hàng tên miền: " +
+              confirmFormDomainName +
+              " ?"
+          );
+          if ($confirm) {
+            // contact_id có giá trị hợp lệ => tiến hành ajax đặt hàng
+            console.log(
+              firstItem.contact_id,
+              confirmFormDomainName,
+              confirmFormNameservers
+            );
+            domainToOrder(
+              event,
+              confirmFormDomainName,
+              firstItem.contact_id,
+              confirmFormNameservers
+            );
+          }
         } else {
           // Xoá toàn bộ thông báo lỗi và class trạng thái cũ
           jQuery(".input-error").remove();
@@ -290,78 +317,136 @@ function contactCreateNew(event) {
     });
 }
 
-function domainToOrder(event) {
-  // // Khối tạo hiệu ứng chờ
-  // event.preventDefault();
-  // Utility.make().toggleSpinner("#spinner");
-  // Utility.make().freeze("#ajaxHtmlReplacer");
-  // Utility.make().alert(
-  //   "#alertBox",
-  //   "success",
-  //   "Đang lấy hoá đơn ... cảm ơn vì đã kiên nhẫn"
-  // );
-  // // Khối nhặt seclector
+function domainToOrder(event, domain_name, contact_id, nameservers) {
+  // Khối tạo hiệu ứng chờ
+  event.preventDefault();
+  Utility.make().toggleSpinner("#spinner");
+  Utility.make().freeze("#ajaxHtmlReplacer");
+  Utility.make().alert(
+    "#alertBox",
+    "success",
+    "Đang lấy hoá đơn ... cảm ơn vì đã kiên nhẫn"
+  );
+  // Khối nhặt seclector
   // const ajaxHtmlReplacer = jQuery("#ajaxHtmlReplacer");
   // const domainInput = jQuery(".domainInput");
   // const domainValue = domainInput.length ? domainInput.val() : "";
   // const invoiceSave = jQuery(".invoiceSave");
-  // // Khối dữ liệu fetch cần gửi đi
-  // const fetchBody = new URLSearchParams({
-  //   action: "ajaxDomainToOrder",
-  //   domain: domainToOrderValue,
+  // Khối dữ liệu fetch cần gửi đi
+  const fetchBody = new URLSearchParams({
+    action: "ajaxDomainToOrder",
+    domain: domain_name,
+    contact_id: contact_id,
+    nameservers: JSON.stringify(nameservers),
+  });
+
+  // Khối gói cấu hình fetch
+  const fetchPackage = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: fetchBody,
+    credentials: "same-origin",
+  };
+  console.log(JSON.stringify(nameservers));
+  console.log(domain_name);
+  console.log(contact_id);
+
+  // Khối chạy fetch
+  fetch(scriptReceiver.adminAjaxUrl, fetchPackage)
+    .then((response) => {
+      if (!response.ok) {
+        return response.text().then((text) => {
+          throw new Error(`HTTP ${response.status}: ${text}`);
+        });
+      }
+      return response.json();
+    })
+    .then((res) => {
+      console.log("API response:", res);
+      if (res.json.invoice_id) {
+        const url =
+          scriptReceiver.invoicePrintUrl + `?invoice=${res.json.invoice_id}`;
+        window.open(url, "_self");
+      }
+    })
+    .catch((err) => {
+      console.error("Lỗi fetch (đây là catch):", err);
+      alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.");
+    });
+  // .finally(() => {
+  //   // Utility.make().toggleSpinner("#spinner", "off");
+  //   // Utility.make().unfreeze("#ajaxHtmlReplacer");
   // });
-  // // Khối gói cấu hình fetch
-  // const fetchPackage = {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/x-www-form-urlencoded",
-  //   },
-  //   body: fetchBody,
-  //   credentials: "same-origin",
-  // };
-  // // Khối chạy fetch
-  // fetch(scriptReceiver.adminAjaxUrl, fetchPackage)
-  //   .then((response) => {
-  //     if (!response.ok) {
-  //       return response.text().then((text) => {
-  //         throw new Error(`HTTP ${response.status}: ${text}`);
-  //       });
-  //     }
-  //     return response.json();
-  //   })
-  //   .then((res) => {
-  //     console.log("API response:", res);
-  //     console.log("API response:", res.html);
-  //     ajaxHtmlReplacer.html(res.html);
-  //     return res;
-  //   })
-  //   .then((res) => {
-  //     const domainInput = jQuery(".domainInput");
-  //     if (domainInput.length) {
-  //       domainInput.val(res.json.domain_name).trigger("input");
-  //       Utility.make().alert(
-  //         "#alertBox",
-  //         res.json.info.color,
-  //         res.json.info.alert
-  //       );
-  //     } else {
-  //       console.warn("Không tìm thấy .domainInput sau khi render");
-  //     }
-  //     return res;
-  //   })
-  //   .then((res) => {
-  //     if (res.json.info.code == 100) {
-  //       const url =
-  //         scriptReceiver.orderFormUrl + `?domain_name=${res.json.domain_name}`;
-  //       window.open(url, "_blank"); // mở tab mới
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.error("Lỗi fetch (đây là catch):", err);
-  //     alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.");
-  //   })
-  //   .finally(() => {
-  //     Utility.make().toggleSpinner("#spinner", "off");
-  //     Utility.make().unfreeze("#ajaxHtmlReplacer");
-  //   });
+}
+
+function invoiceStatusInspect() {
+  const invoiceCheckerId =
+    jQuery(".invoiceCheckerId").data("invoice-checker-id");
+  console.log("Invoice ID:", invoiceCheckerId);
+
+  if (invoiceCheckerId) {
+    const fetchBody = new URLSearchParams({
+      action: "ajaxInvoiceChecker",
+      invoice_checker_id: invoiceCheckerId,
+    });
+    const fetchPackage = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: fetchBody,
+      credentials: "same-origin",
+    };
+
+    fetchInvoicInspect = function () {
+      console.log("Ping...");
+      fetch(scriptReceiver.adminAjaxUrl, fetchPackage)
+        .then((response) => {
+          if (!response.ok) {
+            return response.text().then((text) => {
+              throw new Error(`HTTP ${response.status}: ${text}`);
+            });
+          }
+          return response.json();
+        })
+        .then((res) => {
+          console.log("Phản hồi:", res.json);
+
+          // Kiểm tra nếu đã thanh toán
+          if (res.json.status === "Paid") {
+            alert("Thông báo: Hoá đơn đã thanh toán thành công!");
+            clearInterval(intervalId); // ❌ DỪNG LẶP NGAY
+            clearTimeout(timeoutId);
+            console.log("Dừng thao tác reload 5 phút chưa thanh toán");
+            // Mở trang khác nếu cần
+            // window.open("", "_self");
+          } else {
+            console.log("Thông báo: Đang đợi thanh toán...");
+          }
+        })
+        .catch((err) => {
+          console.error("Lỗi fetch (đây là catch):", err);
+          alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.");
+          clearInterval(intervalId);
+          clearTimeout(timeoutId);
+        });
+    };
+
+    fetchInvoicInspect();
+    // Chạy invoice checker
+    const intervalId = setInterval(() => {
+      fetchInvoicInspect();
+    }, 10000); // 10s check
+
+    // Dừng sau 5 phút (30 lần tránh spam quá lâu)
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+      alert(
+        "Sau 5 phút hoá đơn chưa thanh toán, tự động reload trang (nếu đã thanh toán vẫn được xác nhận)"
+      );
+      location.reload();
+    }, 300000);
+  }
 }

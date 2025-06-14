@@ -2,13 +2,13 @@
 
 namespace Model;
 
-use GuzzleHttp\Exception\GuzzleException;
+use Helper\Maker;
 use Helper\Tool;
 use Repository\ApiClient;
-use RuntimeException;
 
 class Contact extends ApiClient
 {
+    use Maker;
     public function __construct()
     {
         $auth = new Auth(CONFIG_USERNAME, CONFIG_PASSWORD);
@@ -16,11 +16,49 @@ class Contact extends ApiClient
     }
 
     // Get
-    public function contactList()
+    public function fetchContactList()
     {
         $endpoint = "contact";
         $response = $this->call($endpoint, 'get');
         return $response;
+    }
+    public function fetchContactDetail(string|int $contact_id)
+    {
+        $endpoint = "contact/" . (string) $contact_id;
+        $response = $this->call($endpoint, 'get');
+        return $response;
+    }
+    public function getClientIdList()
+    {
+        $data = $this->fetchContactList();
+        $clientIdList = [];
+        foreach ($data->contacts as $contact) {
+            $clientIdList[$contact->access_id] = $contact->client_id;
+        };
+        $response = $clientIdList;
+        return $response;
+    }
+    public function getClientIdByAccessId(string|int $access_id)
+    {
+        $clientIdList = $this->getClientIdList();
+
+
+        foreach ($clientIdList as $accessIdFromList => $clientId) {
+            if ($accessIdFromList === (int) $access_id) {
+                return $clientId;
+            }
+        };
+        return null;
+    }
+    public function getLoggedInContact()
+    {
+        $endpoint = "details";
+        $response = $this->call($endpoint, 'get');
+        return $response->client;
+    }
+    public function getLoggedInContactId()
+    {
+        return $this->getLoggedInContact()->id;
     }
 
     // CRUD
@@ -35,7 +73,6 @@ class Contact extends ApiClient
         } else {
             $data = [$response];
         }
-
         return $data;
     }
 
@@ -50,7 +87,7 @@ class Contact extends ApiClient
                 "nationalid" => $postFormParams['customerNationalId'] ?? null, //Value pattern: ^\d{8,12}$
                 "email" => $postFormParams['customerEmail'] ?? null, // Đúng định dạng email
                 "birthday" => $postFormParams['customerBirthday'] ?? null, // định dạng dd/mm/yyyy
-                "country" => $postFormParams['customerCountry'] ?? null, //Nhập bình thường
+                "country" => "VN", //Nhập bình thường (tôi đang auto cái này)
                 "state" => $postFormParams['customerState'] ?? null, // VN không có bang -> Tỉnh/thành phố
                 "city" => $postFormParams['customerDistrict'] ?? null, // Vì state là tỉnh/thành phố nên city biến thành district,  -> Quận/huyện
                 "ward" => $postFormParams['customerWard'] ?? null, // Phường/xã

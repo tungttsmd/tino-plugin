@@ -9,8 +9,6 @@ class Confirm
     public function __construct()
     {
         // Xoá khi có thể (chỉ test) DASHBOARD
-        echo RenderAction::make()->contactListRender();
-
         $session_domain_name = $_SESSION['tino_inspect_save']['_100_status_anti_csrf']['domain_name'] ?? null;
         $session_domain_total = $_SESSION['tino_inspect_save']['_100_status_anti_csrf']['domain_total'] ?? null;
         if ($session_domain_name && $session_domain_total) {
