@@ -16,12 +16,6 @@ jQuery(document).ready(function () {
   if (jQuery("#tino-container .invoiceCheckerId").length > 0) {
     invoiceStatusInspect();
   }
-  if (jQuery("#tino-container .contactList").length > 0) {
-    orderListJs();
-  }
-  if (jQuery("#tino-container .invoiceCheckerId").length > 0) {
-    contactListJs();
-  }
 });
 
 // Nút đóng alert
@@ -312,7 +306,11 @@ function contactCreateNew(event) {
             },
             firstname: {
               id: "#customerFirstname",
-              msg: "Họ và tên không được để trống hoặc có kí tự lạ",
+              msg: "Họ và tên lót không được để trống hoặc có kí tự lạ",
+            },
+            lastname: {
+              id: "#customerLastname",
+              msg: "Tên không được để trống hoặc có kí tự lạ",
             },
             so_cccd_passport_required: {
               id: "#customerNationalId",
@@ -529,48 +527,125 @@ function invoiceStatusInspect() {
 
 
 // === tino-panel.js === //
-function contactListJs() {
-  document.addEventListener("DOMContentLoaded", function () {
-    const input = document.getElementById("searchInput");
-    const table = document.querySelector("#ajaxHtmlReplacer table");
-    const tbody = table.querySelector("tbody");
+function panelSearch() {
+  const input = document.getElementById("searchInput");
+  const table = document.querySelector("#ajaxHtmlReplacer table");
+  if (!input || !table) return;
 
-    input.addEventListener("keyup", function () {
-      const keyword = input.value.toLowerCase().trim();
-      const rows = tbody.querySelectorAll("tr");
+  const tbody = table.querySelector("tbody");
 
-      rows.forEach((row) => {
-        const name = row.cells[1].textContent.toLowerCase();
-        const email = row.cells[2].textContent.toLowerCase();
-        if (name.includes(keyword) || email.includes(keyword)) {
-          row.style.display = "";
-        } else {
-          row.style.display = "none";
-        }
-      });
+  input.addEventListener("keyup", function () {
+    const keyword = input.value.toLowerCase().trim();
+    const rows = tbody.querySelectorAll("tr");
+
+    rows.forEach((row) => {
+      // Gộp tất cả textContent của các cell trong hàng
+      const rowText = [...row.cells]
+        .map((cell) => cell.textContent.toLowerCase())
+        .join(" ");
+
+      // So sánh keyword với toàn bộ nội dung dòng
+      if (rowText.includes(keyword)) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
     });
   });
 }
-function orderListJs() {
-  document.addEventListener("DOMContentLoaded", function () {
-    const input = document.getElementById("searchInput");
-    const table = document.querySelector("#ajaxHtmlReplacer table");
+  function sortTable(th, colIndex, type = "string") {
+    const table = th.closest("table");
     const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
 
-    input.addEventListener("keyup", function () {
-      const keyword = input.value.toLowerCase().trim();
-      const rows = tbody.querySelectorAll("tr");
+    // Kiểm tra trạng thái sắp xếp hiện tại
+    const isCurrentlyAsc = th.classList.contains("asc");
+    const isAsc = !isCurrentlyAsc;
 
-      rows.forEach((row) => {
-        const domainName = row.cells[1].textContent.toLowerCase();
-        if (domainName.includes(keyword)) {
-          row.style.display = "";
-        } else {
-          row.style.display = "none";
-        }
-      });
+    // Reset class asc/desc tất cả các th
+    table.querySelectorAll("th").forEach((thEl) => {
+      thEl.classList.remove("asc", "desc");
     });
+    th.classList.add(isAsc ? "asc" : "desc");
+
+    rows.sort((a, b) => {
+      let valA = a.cells[colIndex]?.textContent.trim() ?? "";
+      let valB = b.cells[colIndex]?.textContent.trim() ?? "";
+
+      switch (type) {
+        case "number":
+          valA = parseFloat(valA.replace(/,/g, "")) || 0;
+          valB = parseFloat(valB.replace(/,/g, "")) || 0;
+          return isAsc ? valA - valB : valB - valA;
+
+        case "date":
+          valA = new Date(valA).getTime();
+          valB = new Date(valB).getTime();
+          return isAsc ? valA - valB : valB - valA;
+
+        case "string":
+        default:
+          return isAsc
+            ? valA.localeCompare(valB, "vi", { sensitivity: "base" })
+            : valB.localeCompare(valA, "vi", { sensitivity: "base" });
+      }
+    });
+
+    // Append lại theo thứ tự mới
+    rows.forEach((row) => tbody.appendChild(row));
+}
+
+
+// === tino-tabLoader.js === //
+function loadpage(tab_data, detail_data, selector) {
+  const contentDiv = jQuery(selector); // Lấy thẻ #content
+  // Khối dữ liệu fetch cần gửi đi
+  const fetchBody = new URLSearchParams({
+    action: "ajaxTabLoader",
+    tab: tab_data,
+    detail: detail_data,
   });
+
+  // Khối gói cấu hình fetch
+  const fetchPackage = {
+    method: "POST",
+    body: fetchBody,
+    credentials: "same-origin",
+  };
+
+  // Khối chạy fetch
+  fetch(scriptReceiver.adminAjaxUrl, fetchPackage)
+    .then((res) => {
+      if (!res.ok) throw new Error("Lỗi tải nội dung");
+      return res.json(); // Lấy response là HTML
+    })
+    .then((res) => {
+      console.log("Phản hồi: " + res.html);
+      contentDiv.html(res.html); // Gán HTML vào div content
+
+      if (
+        jQuery(".orderList").length > 0 ||
+        jQuery(".contactList").length > 0 ||
+        jQuery(".invoiceList").length > 0
+      ) {
+        // 🔁 Sau khi load HTML xong, kiểm tra class và gắn script phù hợp
+        panelSearch();
+      }
+    })
+    .catch((err) => {
+      contentDiv.html(`<p style="color:red;">${err.message}</p>`); // Nếu lỗi thì báo
+    });
+  // Xử lý nút active
+  const buttons = document.querySelectorAll(".tab-buttons button");
+  buttons.forEach((btn) => btn.classList.remove("active"));
+
+  // Gán class active cho nút vừa click
+  const clickedButton = [...buttons].find((btn) =>
+    btn.getAttribute("onclick")?.includes(tab_data)
+  );
+  if (clickedButton) {
+    clickedButton.classList.add("active");
+  }
 }
 
 

@@ -3,13 +3,22 @@
 namespace Controller;
 
 use Helper\Maker;
+use Helper\Request;
 use Model\Contact;
 use Model\Domain;
 use Model\Invoice;
+use Service\ContactService;
+use Service\InvoiceService;
+use Service\OrderService;
 
 class AsyncController
 {
     use Maker;
+    private $request;
+    public function __construct()
+    {
+        $this->request = Request::make();
+    }
     public function fetchDomainInspect()
     {
         $json = Domain::make()->domainInspect($_POST['domain']);
@@ -58,6 +67,53 @@ class AsyncController
         return [
             'success' => true,
             'json' => $json,
+        ];
+    }
+    public function fetchTabLoader()
+    {
+        $request = $this->request->post("tab");
+        $query = $this->request->post("detail");
+
+        // Nếu là tab, bật chế độ trang quản lý panel
+        switch ($request) {
+            case 'contact':
+                // Nếu tab contact thì lấy panel contact ra
+                if ($query) {
+                    $data = ContactService::make()->contactPanel($query);
+                    $html = view("panel/contactDetail", ["data" => $data], true);
+                    break;
+                }
+                $data = ContactService::make()->contactPanel();
+                $html = view("panel/contactList", ["data" => $data], true);
+                break;
+            case 'order':
+                // Nếu tab order thì lấy panel order ra
+                if ($query) {
+                    $data = OrderService::make()->orderPanel($query);
+                    $html = view("panel/orderDetail.php", ["data" => $data], true);
+                    break;
+                }
+                $data = OrderService::make()->orderPanel();
+                $html = view("panel/orderList.php", ["data" => $data], true);
+                break;
+            case 'invoice':
+                // Nếu tab invoice thì lấy panel invoice ra
+                if ($query) {
+                    $data = InvoiceService::make()->invoicePanel($query);
+                    $html = view("panel/invoiceDetail.php", ["data" => $data], true);
+                    break;
+                }
+                $data = InvoiceService::make()->invoicePanel();
+                $html = view("panel/invoiceList.php", ["data" => $data], true);
+                break;
+            default:
+                // Nếu tab sai thì cứ lấy form kiểm tra domain ra
+                $html = "Không tìm thấy dữ liệu phù hợp";
+        }
+        return [
+            'success' => true,
+            'html' => $html,
+            'json' => $query
         ];
     }
 }

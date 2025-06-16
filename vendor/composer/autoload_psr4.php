@@ -14,6 +14,7 @@ return array(
     'Repository\\' => array($baseDir . '/src/app/Repository'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
+    'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => array($vendorDir . '/dealerdirect/phpcodesniffer-composer-installer/src'),
     'Model\\' => array($baseDir . '/src/app/Model'),
     'Includes\\' => array($baseDir . '/src/includes'),
     'Helper\\' => array($baseDir . '/src/app/Helper'),

@@ -28,12 +28,16 @@
 
             <label><strong>Thông tin chủ sở hữu tên miền</strong></label>
 
-            <label>Họ và tên *</label>
-            <input type="text" class="formInput" id="customerFirstname" placeholder="Nguyễn Văn A" required />
-            <small><i>Vui lòng nhập đúng tên theo tên trên căn cước</i></small>
+            <label>Họ và tên lót *</label>
+            <input type="text" class="formInput" id="customerFirstname" placeholder="Trần Đõ Văn" required />
+            <small><i>Vui lòng nhập đúng tên theo tên trên căn cước vd: Trần Đỗ Văn Anh thì nhập "Trần Đỗ Văn"</i></small>
+
+            <label>Tên *</label>
+            <input type="text" class="formInput" id="customerLastname" placeholder="Anh" required />
+            <small><i>Vui lòng nhập đúng tên theo tên trên căn cước vd: Trần Đỗ Văn Anh thì nhập "Anh"</i></small>
 
             <label>Ngày sinh *</label>
-            <input type="text" class="formInput" id="customerBirthday" placeholder="dd/mm/yyyy" />
+            <input type="date" class="formInput" id="customerBirthday" placeholder="dd/mm/yyyy" />
             <small><i>Vui lòng nhập đúng ngày sinh theo căn cước</i></small>
 
             <label>Giới tính *</label>

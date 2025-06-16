@@ -3,6 +3,7 @@
 namespace Includes\Ajax;
 
 use Controller\AsyncController;
+use Controller\SyncController;
 
 class AsyncRegister
 {
@@ -16,6 +17,8 @@ class AsyncRegister
         add_action('wp_ajax_nopriv_ajaxContactCreate', [$this, 'ajaxContactCreate_callback']); // Dành cho người dùng không đăng nhập
         add_action('wp_ajax_ajaxInvoiceChecker', [$this, 'ajaxInvoiceChecker_callback']);
         add_action('wp_ajax_nopriv_ajaxInvoiceChecker', [$this, 'ajaxInvoiceChecker_callback']); // Dành cho người dùng không đăng nhập
+        add_action('wp_ajax_ajaxTabLoader', [$this, 'ajaxTabLoader_callback']);
+        add_action('wp_ajax_nopriv_ajaxTabLoader', [$this, 'ajaxTabLoader_callback']);
     }
 
     public function ajaxDomainInspect_callback()
@@ -36,5 +39,10 @@ class AsyncRegister
     public function ajaxInvoiceChecker_callback()
     {
         wp_send_json(AsyncController::make()->fetchInvoiceInspect());
+    }
+
+    public function ajaxTabLoader_callback()
+    {
+        wp_send_json(AsyncController::make()->fetchTabLoader());
     }
 }

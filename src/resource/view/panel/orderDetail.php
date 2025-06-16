@@ -1,9 +1,9 @@
-<?php
+<div class="formEdit" style="font-family: Arial, sans-serif; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+    <div class="button-wrapper" style="display: flex; width: 100%; margin-bottom: 20px">
+        <h3 style="width: 100%"><b>🔍 Thông tin đơn hàng</b></h3>
+        <button onclick="loadpage('order',null,'#ajaxHtmlReplacer')" type="button" style=" width: 100%" class="button-outline">Quay lại danh sách đặt hàng</button>
+    </div>
 
-/** @var stdClass $data */ ?>
-
-<form method="post" class="formEdit" style="font-family: Arial, sans-serif; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
-    <h2>🔍 Thông tin đơn hàng</h2>
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
         <tr>
             <th style="text-align: left; width: 200px;">Mã đơn hàng:</th>
@@ -121,10 +121,4 @@
             </fieldset>
         <?php endforeach; ?>
     </div>
-    <div class="button-wrapper" style="margin-top: 20px;display: flex; gap: 20px;width: 100%">
-        <button style="width: 100%" type="submit" class="formEdit" style="padding: 10px 20px; font-weight: bold;">💾 Lưu thay đổi</button>
-        <a style="width: 100%" href="?tab=order">
-            <button type="button" style=" width: 100%" class="button-outline">Quay lại danh sách đặt hàng</button>
-        </a>
-    </div>
-</form>
+</div>

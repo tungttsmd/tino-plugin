@@ -81,6 +81,7 @@ class Contact extends ApiClient
             'json' => [
                 "gender" => $postFormParams['customerGender'] ?? null,
                 "firstname" => $postFormParams['customerFirstname'] ?? null,
+                "lastname" => $postFormParams['customerLastname'] ?? null,
                 "phonenumber" => $postFormParams['customerPhone'] ?? null, // Gửi thông báo qua zalo
                 "nationalid" => $postFormParams['customerNationalId'] ?? null, //Value pattern: ^\d{8,12}$
                 "email" => $postFormParams['customerEmail'] ?? null, // Đúng định dạng email
@@ -92,7 +93,6 @@ class Contact extends ApiClient
                 "address1" => $postFormParams['customerAddress'] ?? null,
                 "emailvat" => $postFormParams['customerEmailVat'] ?? null, // Email nhận hoá đơn (nên owner hay admin ta?)
                 "type" => "Private", // or Company
-                "lastname" => "A", // or Company
                 // "password" => "passwordValue",
                 // "privileges" => "privilegesValue",
                 // "companyname" => "companynameValue",

@@ -1,5 +1,8 @@
-<form method="post" class="formEdit" style="font-family: Arial, sans-serif; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
-    <h2>👤 Thông tin liên hệ</h2>
+<div class="formEdit" style="font-family: Arial, sans-serif; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+    <div class="button-wrapper" style="display: flex; width: 100%; margin-bottom: 20px">
+        <h3 style="width: 100%"><b>👤 Thông tin liên hệ</b></h3>
+        <button type="button" style=" width: 100%" class="button-outline" onclick="loadpage('contact',null,'#ajaxHtmlReplacer')">Quay lại danh sách liên hệ</button>
+    </div>
 
     <table style="width: 100%; border-collapse: collapse;">
         <tr>
@@ -88,10 +91,4 @@
             <td><input class="formEdit" type="text" name="contact[password]" value="<?= htmlspecialchars($data->password) ?>" style="width: 100%;" /></td>
         </tr>
     </table>
-    <div class="button-wrapper" style="display: flex; gap: 20px;width: 100%">
-        <button style="width: 100%" type="submit" class="formEdit" style="padding: 10px 20px; font-weight: bold;">💾 Lưu thay đổi</button>
-        <a style="width: 100%" href="?tab=contact">
-            <button type="button" style=" width: 100%" class="button-outline">Quay lại danh sách liên hệ</button>
-        </a>
-    </div>
-</form>
+</div>

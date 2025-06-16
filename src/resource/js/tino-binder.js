@@ -15,12 +15,6 @@ jQuery(document).ready(function () {
   if (jQuery("#tino-container .invoiceCheckerId").length > 0) {
     invoiceStatusInspect();
   }
-  if (jQuery("#tino-container .contactList").length > 0) {
-    orderListJs();
-  }
-  if (jQuery("#tino-container .invoiceCheckerId").length > 0) {
-    contactListJs();
-  }
 });
 
 // Nút đóng alert

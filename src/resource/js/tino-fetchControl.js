@@ -236,7 +236,11 @@ function contactCreateNew(event) {
             },
             firstname: {
               id: "#customerFirstname",
-              msg: "Họ và tên không được để trống hoặc có kí tự lạ",
+              msg: "Họ và tên lót không được để trống hoặc có kí tự lạ",
+            },
+            lastname: {
+              id: "#customerLastname",
+              msg: "Tên không được để trống hoặc có kí tự lạ",
             },
             so_cccd_passport_required: {
               id: "#customerNationalId",

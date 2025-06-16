@@ -15,18 +15,26 @@ class ShortcodeRegister
     }
     function webo_bang_gia()
     {
-        echo SyncController::make()->renderPricingControl();
+        echo SyncController::make()->pricing();
     }
     function webo_dang_ky()
     {
-        echo SyncController::make()->renderOrderControl();
+        echo SyncController::make()->domainInspect();
     }
     function webo_hoa_don()
     {
-        echo SyncController::make()->renderInvoiceControl();
+        echo SyncController::make()->invoice();
+
+        //Test
+        $request = $_GET['tab'] ?? null;
+        if ($request === "panel") {
+            view("layout/layout_panel", []);
+        } elseif ($request === "detail") {
+            view("layout/layout_detail", []);
+        }
     }
     function webo_dat_hang()
     {
-        echo SyncController::make()->renderConfirmControl();
+        echo SyncController::make()->confirm();
     }
 }
