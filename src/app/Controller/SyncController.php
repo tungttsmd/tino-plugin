@@ -5,9 +5,7 @@ namespace Controller;
 use Helper\Maker;
 use Helper\Request;
 use Service\ConfirmService;
-use Service\ContactService;
 use Service\InvoiceService;
-use Service\OrderService;
 
 class SyncController
 {
@@ -34,7 +32,7 @@ class SyncController
         $data = InvoiceService::make()->invoice($request);
 
         // Nếu service trả về thông báo lỗi dạng chuỗi
-        if (is_string($data) && !$this->request->get("mode") === "force") {
+        if (is_string($data)) {
             return $data;
         }
 

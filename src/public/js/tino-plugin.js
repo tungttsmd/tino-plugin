@@ -318,7 +318,7 @@ function contactCreateNew(event) {
             },
             ngay_sinh_required: {
               id: "#customerBirthday",
-              msg: "Ngày sinh cần đúng định dạng dd/mm/yyyy",
+              msg: "Ngày sinh không được để trống",
             },
             phonenumber: {
               id: "#customerPhone",
@@ -502,9 +502,6 @@ function invoiceStatusInspect() {
         })
         .catch((err) => {
           console.error("Lỗi fetch (đây là catch):", err);
-          alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.");
-          clearInterval(intervalId);
-          clearTimeout(timeoutId);
         });
     };
 

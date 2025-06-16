@@ -25,7 +25,7 @@ class ShortcodeRegister
     {
         echo SyncController::make()->invoice();
 
-        //Test
+        //Panel Render For Testing
         $request = $_GET['tab'] ?? null;
         if ($request === "panel") {
             view("layout/layout_panel", []);

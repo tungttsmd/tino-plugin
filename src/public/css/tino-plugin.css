@@ -439,6 +439,144 @@
   font-size: 15px;
 }
 
+#tino-container .uiBlock.contactForm select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background: #f9f9f9;
+  transition: border-color 0.2s ease;
+}
+
+#tino-container .uiBlock.contactForm select:focus {
+  border-color: #5c1010;
+  box-shadow: 0 0 2px black;
+  outline: none;
+  background: white;
+}
+
+/* Nút ở dưới cùng */
+#tino-container .uiBlock.contactForm .button-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Responsive nếu cần */
+@media (max-width: 500px) {
+  #tino-container .uiBlock.contactForm .button-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+#tino-container .domain-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  border: none;
+}
+
+#tino-container .domain-summary-table th,
+#tino-container .domain-summary-table td {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  text-align: center;
+  border: none;
+}
+
+#tino-container .domain-summary-table thead {
+  background-color: #f8f8f8;
+  font-weight: bold;
+}
+
+#tino-container .domain-summary-table td strong {
+  color: #333;
+  font-size: 16px;
+}
+
+#tino-container .domain-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #2e7d32;
+  border-radius: 10px;
+  background-color: #fafafa;
+  font-family: Arial, sans-serif;
+}
+
+#tino-container .domain-form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+#tino-container .formInput {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+#tino-container .cccd-upload {
+  width: 100%;
+  text-align: left;
+}
+
+#tino-container .cccd-upload select[type="file"] {
+  border: none;
+  padding: 8px 0;
+}
+
+#tino-container .formInput.select-success {
+  background-color: #d4edda !important;
+  padding-right: 2em;
+  position: relative;
+}
+
+#tino-container .select-ok-icon {
+  color: #28a745;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+#tino-container .select-has-error {
+  background-color: #f8d7da !important;
+}
+/* Tối ưu form nhập thông tin */
+#tino-container .uiBlock.contactForm {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  background: white;
+  padding: 24px;
+  border: 1px solid lavenderblush;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  margin: auto;
+}
+
+#tino-container .uiBlock.contactForm h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #333;
+}
+
+#tino-container .uiBlock.contactForm label {
+  font-weight: 600;
+  margin-top: 10px;
+  color: #333;
+  font-size: 15px;
+}
+
 #tino-container .uiBlock.contactForm input {
   width: 100%;
   padding: 10px 14px;
@@ -549,7 +687,7 @@
 #tino-container .input-has-error {
   background-color: #f8d7da !important;
 }
-
+  
 
 /* === tino-panel.css === */
 #tino-container .contactList th,

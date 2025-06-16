@@ -11,7 +11,6 @@
 if (!defined('ABSPATH')) {
     exit; // Ngăn truy cập trực tiếp
 }
-
 require plugin_dir_path(__FILE__) . "vendor/autoload.php";
 
 $plugin = new Includes\Plugin();
