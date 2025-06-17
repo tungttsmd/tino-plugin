@@ -71,7 +71,7 @@ jQuery(".formInput").on("input", function () {
 function domainInspect(event) {
   // Khối tạo hiệu ứng chờ
   event.preventDefault();
-  Utility.make().toggleSpinner("#spinner");
+  Utility.make().toggleSpinner("#spinnerDivCenter");
   Utility.make().freeze("#ajaxHtmlReplacer");
   Utility.make().alert(
     "#alertBox",
@@ -158,7 +158,7 @@ function domainInspect(event) {
       alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.");
     })
     .finally(() => {
-      Utility.make().toggleSpinner("#spinner", "off");
+      Utility.make().toggleSpinner("#spinnerDivCenter", "off");
       Utility.make().unfreeze("#ajaxHtmlReplacer");
     });
 }
@@ -166,7 +166,7 @@ function domainInspect(event) {
 function redirectInspect(event) {
   // Khối tạo hiệu ứng chờ
   event.preventDefault();
-  Utility.make().toggleSpinner("#spinner");
+  Utility.make().toggleSpinner("#spinnerDivCenter");
   Utility.make().freeze("#ajaxHtmlReplacer");
   Utility.make().alert(
     "#alertBox",
@@ -183,7 +183,7 @@ function redirectInspect(event) {
       scriptReceiver.invoicePrintUrl + `?invoice=${invoiceSave.val()}`;
     window.open(url, "_blank"); // mở tab mới
     Utility.make().alert("#alertBox", "warning", "Đang đợi thanh toán...");
-    Utility.make().toggleSpinner("#spinner", "off");
+    Utility.make().toggleSpinner("#spinnerDivCenter", "off");
     Utility.make().unfreeze("#ajaxHtmlReplacer");
     return;
   } else {
@@ -194,7 +194,7 @@ function redirectInspect(event) {
       "success",
       "Đang đợi cung cấp thông tin đặt hàng..."
     );
-    Utility.make().toggleSpinner("#spinner", "off");
+    Utility.make().toggleSpinner("#spinnerDivCenter", "off");
     Utility.make().unfreeze("#ajaxHtmlReplacer");
     return;
   }
@@ -203,14 +203,10 @@ function redirectInspect(event) {
 function contactCreateNew(event) {
   // Khối tạo hiệu ứng chờ
   event.preventDefault();
-  Utility.make().toggleSpinner("#spinner");
+  Utility.make().toggleSpinner("#spinnerDivCenter");
   Utility.make().freeze("#ajaxHtmlReplacer");
-  Utility.make().alert(
-    "#alertBox",
-    "success",
-    "Đang kiểm tra tên miền ... cảm ơn vì đã kiên nhẫn"
-  );
 
+  var domainToOrderState = false;
   const contactInfoPackage = {};
 
   jQuery(".formInput").each(function () {
@@ -278,6 +274,7 @@ function contactCreateNew(event) {
               confirmFormDomainName,
               confirmFormNameservers
             );
+            domainToOrderState = true;
             domainToOrder(
               event,
               confirmFormDomainName,
@@ -386,15 +383,17 @@ function contactCreateNew(event) {
       alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.");
     })
     .finally(() => {
-      Utility.make().toggleSpinner("#spinner", "off");
-      Utility.make().unfreeze("#ajaxHtmlReplacer");
+      if (!domainToOrderState) {
+        Utility.make().toggleSpinner("#spinnerDivCenter", "off");
+        Utility.make().unfreeze("#ajaxHtmlReplacer");
+      }
     });
 }
 
 function domainToOrder(event, domain_name, contact_id, nameservers) {
   // Khối tạo hiệu ứng chờ
   event.preventDefault();
-  Utility.make().toggleSpinner("#spinner");
+  Utility.make().toggleSpinner("#spinnerDivCenter");
   Utility.make().freeze("#ajaxHtmlReplacer");
   Utility.make().alert(
     "#alertBox",
@@ -449,10 +448,6 @@ function domainToOrder(event, domain_name, contact_id, nameservers) {
       console.error("Lỗi fetch (đây là catch):", err);
       alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.");
     });
-  // .finally(() => {
-  //   // Utility.make().toggleSpinner("#spinner", "off");
-  //   // Utility.make().unfreeze("#ajaxHtmlReplacer");
-  // });
 }
 
 function invoiceStatusInspect() {
@@ -595,6 +590,15 @@ function panelSearch() {
 
 // === tino-tabLoader.js === //
 function loadpage(tab_data, detail_data, selector) {
+  // Khối tạo hiệu ứng chờ
+  Utility.make().toggleSpinner("#spinnerDivCenter");
+  Utility.make().freeze("#ajaxHtmlReplacer");
+  Utility.make().alert(
+    "#alertBox",
+    "warning",
+    "Đang lấy dữ liệu..."
+  );
+
   const contentDiv = jQuery(selector); // Lấy thẻ #content
   // Khối dữ liệu fetch cần gửi đi
   const fetchBody = new URLSearchParams({
@@ -631,7 +635,12 @@ function loadpage(tab_data, detail_data, selector) {
     })
     .catch((err) => {
       contentDiv.html(`<p style="color:red;">${err.message}</p>`); // Nếu lỗi thì báo
+    })
+    .finally(() => {
+      Utility.make().toggleSpinner("#spinnerDivCenter", "off");
+      Utility.make().unfreeze("#ajaxHtmlReplacer");
     });
+
   // Xử lý nút active
   const buttons = document.querySelectorAll(".tab-buttons button");
   buttons.forEach((btn) => btn.classList.remove("active"));

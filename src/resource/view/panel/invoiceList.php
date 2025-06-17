@@ -8,7 +8,8 @@
                 <th onclick="sortTable(this, 3, 'number')" style="padding: 10px; border: 1px solid #ccc;">Tổng tiền (VND)</th>
                 <th onclick="sortTable(this, 4, 'string')" style="padding: 10px; border: 1px solid #ccc;">Trạng thái</th>
                 <th onclick="sortTable(this, 5, 'number')" style="padding: 10px; border: 1px solid #ccc;">Số hoá đơn</th>
-                <th style="padding: 10px; border: 1px solid #ccc;">Hành động</th>
+                <th style="padding: 10px; border: 1px solid #ccc;">Thanh toán</th>
+		<th style="padding: 10px; border: 1px solid #ccc;">Hành động</th> 
             </tr>
         </thead>
         <tbody>
@@ -33,6 +34,11 @@
                     </td>
                     <td style="padding: 10px; border: 1px solid #ccc;">
                         <?= htmlspecialchars($invoice->number) ?>
+                    </td>
+ 		    <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
+			<a href="<?=CONFIG_INVOICE_PRINT_URL."?invoice=".htmlspecialchars($invoice->id)?>" target="_blank">
+           	    	    <button class="button-pretty" style="color: white; width: 100%">Thanh toán</button>
+			</a>
                     </td>
                     <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
                         <div class="button-wrapper" style="width: 100%">

@@ -22,11 +22,11 @@ class EnqueueRegister
     # Lấy url
     public function my_enqueue_scripts()
     {
-        wp_enqueue_script('tino-plugin.js', plugins_url('src/public/js/tino-plugin.js', dirname(__FILE__, 3)), array('jquery'), time(), true);
+        wp_enqueue_script('tino-plugin.js', plugins_url('src/public/js/tino-plugin-v5.js', dirname(__FILE__, 3)), array('jquery'), time(), true);
         wp_localize_script('tino-plugin.js', 'scriptReceiver', $this->sendPack);
     }
     public function my_enqueue_styles()
     {
-        wp_enqueue_style('tino-plugin', plugins_url('src/public/css/tino-plugin.css', dirname(__FILE__, 3)), array(), '1.0.0');
+        wp_enqueue_style('tino-plugin', plugins_url('src/public/css/tino-plugin-v5.css', dirname(__FILE__, 3)), array(), '1.0.0');
     }
 }

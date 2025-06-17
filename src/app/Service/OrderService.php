@@ -4,6 +4,7 @@ namespace Service;
 
 use Helper\Maker;
 use Model\Domain;
+use Model\DummyAPI;
 use Model\Order;
 
 class OrderService
@@ -17,18 +18,24 @@ class OrderService
     public function orderPanel($request = null)
     {
         if ($request) {
-            $getData = std(Order::make()->fetchOrderDetail($request));
-            $getContact = std(Order::make()->getOrderContactById($request));
-            $getTotal = std(Domain::make()->lookup($getData->details->name));
+            $modelOrder = Order::make();
+            $modelDomain = Domain::make();
+            $getData = std($modelOrder->fetchOrderDetail($request));
+            $order_id = $getData->details->id;
+            $getContact = std($modelOrder->getOrderContactById($getData->details->name));
+            $ekycUrl = $modelOrder->getEkycUrl($order_id);
+            $getTotal = std($modelDomain->lookup($order_id));
+            $documents = $modelOrder->getDocuments($order_id);
             $data = std([
-                "order_id" => $getData->details->id,
+                "order_id" => $order_id,
                 "payment" => $getData->details->status,
                 "order_date" => $getData->details->date_created,
                 "domain_name" => $getData->details->name,
                 "domain_price" => $getTotal->tld === ".vn" ? "450000" : $getTotal->periods->{'0'}->register,
                 "nameservers" => $getData->details->nameservers,
                 "contact" => $getContact->contact_info,
-                "ekyc_info" => $getData->details->ddocs,
+                "ekyc_url" => $ekycUrl,
+                "ekyc_verify" => std($modelOrder->getDocumentUploaded($order_id))->{15}->isUpload,
             ]);
             return $data;
         }

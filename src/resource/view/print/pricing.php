@@ -1,10 +1,14 @@
 <?php
-require dirname(__FILE__,  5) . "/vendor/autoload.php";
-$data = std(Model\Pricing::make()->getTable());
-?>
 
-<div id="tino-iframe">
-    <div class="modern-table-wrapper">
+use Helper\Catcher;
+
+require dirname(__FILE__,  5) . "/vendor/autoload.php";
+
+$data = std(Model\Pricing::make()->getTable());
+
+?>
+<div id="tino-iframe" style="padding:0; border: none">
+    <div class="modern-table-wrapper" style="padding:20px; border: 1px solid green; border-radius: 4px; max-width: 1140px; margin: auto">
         <div class="table-controls">
             <input type="text" id="searchInput" placeholder="Tìm TLD hoặc giá...">
         </div>

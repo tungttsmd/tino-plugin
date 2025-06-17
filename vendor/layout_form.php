@@ -5,7 +5,7 @@
     </div>
 
     <!-- start: ajax html replacer -->
-    <div id="ajaxHtmlReplacer" style="max-width: 1140px; margin: auto">
+    <div id="ajaxHtmlReplacer" style="max-width: 1140px">
         <?php view(template: "form/domainInspect.php") ?>
     </div>
     <!-- end: ajax html replacer -->

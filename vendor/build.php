@@ -3,8 +3,8 @@
 $baseDir = dirname(__DIR__, 1);
 $inputDirCss = $baseDir . '/resource/css';
 $inputDirJs = $baseDir . '/resource/js';
-$outputFileCss = $baseDir . '/public/css/tino-plugin-v5.css';
-$outputFileJs = $baseDir . '/public/js/tino-plugin-v5.js';
+$outputFileCss = $baseDir . '/public/css/tino-plugin.css';
+$outputFileJs = $baseDir . '/public/js/tino-plugin.js';
 
 function ensureDirectoryExists($path) {
     if (!file_exists($path)) {

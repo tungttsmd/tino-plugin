@@ -2,6 +2,7 @@
 
 namespace Model;
 
+use Exception;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
 use Helper\Session;
@@ -25,6 +26,7 @@ class Auth
         // 2. Xác thực & lưu trữ thông tin xác thực vào Session tái sử dụng
         $this->authenToken();
     }
+
 
     // Init
     private function authenLogin($username, $password)

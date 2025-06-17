@@ -20,12 +20,17 @@ class InvoiceService
         $data = Invoice::make()->getInvoiceById($request);
         if (isset($data->status) && $data->status === "Unpaid") {
             $orderModel = new Order();
-            $orderDetail = $orderModel->fetchOrderDetail($data->items[0]->item_id)->details;
-            $orderContact = $orderModel->getOrderContactById($data->items[0]->item_id);
+            $order_id = $data->items[0]->item_id;
+            $ekyc_verify = $orderModel->getDocumentUploaded($order_id);
+            $ekyc_url = $orderModel->getEkycUrl($order_id);
+            $orderDetail = $orderModel->fetchOrderDetail($order_id)->details;
+            $orderContact = $orderModel->getOrderContactById($order_id);
             $data = std($data);
             $data->client = $orderContact->contact_info->registrant; // Không sử dụng thông tin liên hệ của hoá đơn, vì không phản ánh đúng
             $data->domain_id = $orderDetail->id;
             $data->domain_name = $orderDetail->name;
+            $data->ekyc_url = $ekyc_url;
+            $data->ekyc_verify = $ekyc_verify;
             unset($data->items);
             unset($data->discounts);
             return $data; // Mixed data

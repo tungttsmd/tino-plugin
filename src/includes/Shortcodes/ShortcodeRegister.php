@@ -23,15 +23,15 @@ class ShortcodeRegister
     }
     function webo_hoa_don()
     {
-        echo SyncController::make()->invoice();
-
         //Panel Render For Testing
         $request = $_GET['tab'] ?? null;
         if ($request === "panel") {
             view("layout/layout_panel", []);
         } elseif ($request === "detail") {
             view("layout/layout_detail", []);
-        }
+        } else {
+	    echo SyncController::make()->invoice();
+	}
     }
     function webo_dat_hang()
     {

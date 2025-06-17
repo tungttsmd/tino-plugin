@@ -18,13 +18,9 @@ class Pricing extends ApiClient
 
     public function fetchAll()
     {
-        try {
-            $endpoint = "cart/domain/tlds";
-            $response = $this->call($endpoint, 'get');
-            return $response;
-        } catch (\Throwable $e) {
-            throw new RuntimeException("Tld pricing in error");
-        }
+        $endpoint = "cart/domain/tlds";
+        $response = $this->call($endpoint, 'get');
+        return $response;
     }
 
     /**

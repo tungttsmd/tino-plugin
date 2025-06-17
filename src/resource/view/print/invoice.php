@@ -1,7 +1,7 @@
-<div id="tino-container">
-    <div id="printView">
+<div id="tino-container" style="width: 100%">
+    <div id="printView" style="width: 1140px; margin: auto">
         <h2>🧾 Thông tin Hóa đơn</h2>
-        <table class="border" style="width: 100%; border-collapse: collapse; margin: 20px auto; font-family: Arial, sans-serif;">
+        <table class="border" style="border-collapse: collapse; font-family: Arial, sans-serif;">
             <thead>
                 <tr>
                     <th colspan="2" style="text-align: center; background-color: #0077cc; color: white; padding: 12px;">
@@ -72,6 +72,21 @@
                                             <strong style="color: #000;">
                                                 <?= htmlspecialchars($data->domain_id) ?>
                                             </strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; font-weight: bold;">Xác thực Ekyc</td>
+                                        <td style="padding: 8px;">
+                                            <?php if ($data->ekyc_verify) { ?>
+                                                <span>
+													
+                                                    <b style="color: green">Đã xác thực Ekyc (có bug ở đây $data->ekyc_verify tại sao luôn trả true?)</b>
+                                                </span>
+                                            <?php } else { ?>
+                                                <a href="<?= $data->ekyc_url ?>" target="_blank">
+                                                    <button class="button-pretty" style="border-radius: 4px; width: 100%; color: white; background-color: green">Xác thực Ekyc</button>
+                                                </a>
+                                            <?php }; ?>
                                         </td>
                                     </tr>
                                 </table>

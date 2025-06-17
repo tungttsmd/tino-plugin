@@ -15,6 +15,7 @@ function std(array|object $data)
     return Tool::convertToStdObject($data);
 }
 
+
 /**
  * Render một view và trả về HTML hoặc in trực tiếp.
  *
@@ -48,6 +49,18 @@ function view(string $template, array $data = [], bool $return = false)
 function session_get(string $key, mixed $default = null): mixed
 {
     return Session::get($key, $default);
+}
+
+/**
+ * Ép session khởi động
+ *
+ * @param string $key
+ * @param mixed $default
+ * @return mixed
+ */
+function session_force()
+{
+    return Session::session_force();
 }
 
 /**

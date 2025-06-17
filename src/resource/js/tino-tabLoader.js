@@ -1,4 +1,13 @@
 function loadpage(tab_data, detail_data, selector) {
+  // Khối tạo hiệu ứng chờ
+  Utility.make().toggleSpinner("#spinnerDivCenter");
+  Utility.make().freeze("#ajaxHtmlReplacer");
+  Utility.make().alert(
+    "#alertBox",
+    "warning",
+    "Đang lấy dữ liệu..."
+  );
+
   const contentDiv = jQuery(selector); // Lấy thẻ #content
   // Khối dữ liệu fetch cần gửi đi
   const fetchBody = new URLSearchParams({
@@ -35,7 +44,12 @@ function loadpage(tab_data, detail_data, selector) {
     })
     .catch((err) => {
       contentDiv.html(`<p style="color:red;">${err.message}</p>`); // Nếu lỗi thì báo
+    })
+    .finally(() => {
+      Utility.make().toggleSpinner("#spinnerDivCenter", "off");
+      Utility.make().unfreeze("#ajaxHtmlReplacer");
     });
+
   // Xử lý nút active
   const buttons = document.querySelectorAll(".tab-buttons button");
   buttons.forEach((btn) => btn.classList.remove("active"));

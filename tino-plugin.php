@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Tino plugin
  * Description: Dùng shortcode [webo_bang_gia] để lấy bảng giá tên miền; [webo_dang_ky] để lấy form đăng ký tên miền

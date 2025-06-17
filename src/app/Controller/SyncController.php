@@ -52,7 +52,7 @@ class SyncController
     public function pricing()
     {
         // Trường hợp view là iframe đặc biệt, không thể dùng hàm view để kéo dữ liệu cho người dùng
-        $tableHeight = 102 + 42 * CONFIG_TABLE_HEIGHT;
+        $tableHeight = 122 + 42 * CONFIG_TABLE_HEIGHT;
         $iframeSrc = plugins_url('src/resource/view/print/pricing.php', dirname(__FILE__, 3)); // Tạo URL đúng cho file widget_pricing.php
         return '<iframe id="myIframe" src="' . $iframeSrc . '" width="100%" style="height: ' . $tableHeight . 'px; border: none;"></iframe>';
     }

@@ -2,6 +2,9 @@
 
 namespace Helper;
 
+use Throwable;
+use Helper\ExceptionHandler;
+
 trait Maker
 {
     public static function make(...$args): self

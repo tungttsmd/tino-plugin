@@ -10,6 +10,18 @@
             <td><input class="formEdit" type="text" name="order_id" value="<?= htmlspecialchars($data->order_id ?? '...') ?>" style="width: 100%;" /></td>
         </tr>
         <tr>
+            <th style="text-align: left; width: 200px;">Mã đơn hàng:</th>
+            <td>
+                <?php if ($data->ekyc_verify) { ?>
+                    <span style="color: green"><b>Đã hoàn tất xác thực</b></span>
+                <?php } else { ?>
+                    <a href="<?= $data->ekyc_info ?? "#" ?>" target="_blank">
+                        <button type="button" style="background-color: green; border: none; color: white; width: 100%" class="button-outline">Xác thực EKYC</button>
+                    </a>
+                <?php }; ?>
+            </td>
+        </tr>
+        <tr>
             <th style="text-align: left;">Trạng thái thanh toán:</th>
             <td>
                 <select name="payment" class="formEdit" style="width: 100%;">

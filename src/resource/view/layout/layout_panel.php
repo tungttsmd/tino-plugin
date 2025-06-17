@@ -1,21 +1,24 @@
-<div id="tino-container">
+<div id="tino-container" style="margin-top: 120px">
     <div id="spinnerDivCenter">
         <div id="spinner"></div>
     </div>
 
-    <div class="tab-buttons">
-        <button onclick="loadpage('order', null,'#ajaxHtmlReplacer')" type="button">Danh sách đặt hàng</button>
-        <button onclick="loadpage('contact', null, '#ajaxHtmlReplacer')" type="button">Danh sách liên hệ</button>
-        <button onclick="loadpage('invoice', null,'#ajaxHtmlReplacer')" type="button">Danh sách hoá đơn</button>
-        <!-- Ô tìm kiếm được gán ID để xử lý -->
-        <input id="searchInput" type="text" placeholder="Tìm kiếm bất kì..." style="border-radius: 8px; flex: 1; padding: 8px;" />
-    </div>
+   <h3> TINO PLUGIN CPANEL (AUTHOR: TRAN THANH TUNG) </h3>
+   <div style="max-width: 1140px; margin: auto">
+       <div class="tab-buttons">
+           <button onclick="loadpage('order', null,'#ajaxHtmlReplacer')" type="button">Danh sách đặt hàng</button>
+           <button onclick="loadpage('contact', null, '#ajaxHtmlReplacer')" type="button">Danh sách liên hệ</button>
+           <button onclick="loadpage('invoice', null,'#ajaxHtmlReplacer')" type="button">Danh sách hoá đơn</button>
+           <!-- Ô tìm kiếm được gán ID để xử lý -->
+           <input id="searchInput" type="text" placeholder="Tìm kiếm bất kì..." style="border-radius: 8px; flex: 1; padding: 8px;" />
+       </div>
 
 
-    <!-- <button class="button-pretty" onclick="alert('Tạo liên hệ mới')">+ Tạo mới</button> -->
-    <span>Bấm vào tên cột để sắp xếp asc/desc</span>
-    <div id="ajaxHtmlReplacer" class="panelTable" style="border: 1px solid blue; border-radius: 8px; padding: 20px">
-    </div>
+       <!-- <button class="button-pretty" onclick="alert('Tạo liên hệ mới')">+ Tạo mới</button> -->
+       <span>Bấm vào tên cột để sắp xếp asc/desc</span>
+       <div id="ajaxHtmlReplacer" class="panelTable" style="border: 1px solid lighgrey; border-radius: 8px;">
+       </div>
+   </div>
 </div>
 <style>
     .panelTable table {

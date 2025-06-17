@@ -122,4 +122,17 @@ class Session
     {
         return session_status() === PHP_SESSION_ACTIVE;
     }
+	
+	/**
+     * Khởi động cứng session.
+     * Tự động được gọi trước mọi thao tác session.
+     *
+     * @return void
+     */
+    public static function session_force(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
 }

@@ -3,7 +3,9 @@
 namespace Repository;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 
 class ApiClient
 {
@@ -16,7 +18,11 @@ class ApiClient
     // Constructor
     public function __construct($accessToken)
     {
-        $this->accessToken = $accessToken;
+        if (empty($accessToken)) {
+            throw new \InvalidArgumentException("Access token không tồn tại hoặc rỗng");
+        } else {
+            $this->accessToken = $accessToken;
+        }
         $this->baseUri = "https://my.tino.vn/api/";
         $this->sslVerify = false;
         $this->configs = [
@@ -36,15 +42,25 @@ class ApiClient
      * @return \Psr\Http\Message\ResponseInterface
      * raw() là một method dùng để lấy trực tiếp phản hồi api không qua xử lí, nhằm để phát triển api 
      */
-    protected function raw(string $endpoint, $method = "get", array $addonOptions = [])
+    public function raw($endpoint, $method = 'get', $options = [])
     {
         try {
-            $response = $this->client->request(strtoupper($method), $endpoint, array_merge($this->configs, $addonOptions));
+            $response = $this->client->request(strtoupper($method), $endpoint, $options);
             return $response;
-        } catch (GuzzleException $e) {
-            throw new \RuntimeException('API request failed: ' . $e->getMessage(), $e->getCode(), $e);
+        } catch (ClientException $e) {
+            // Bắt lỗi 4xx như 401 Unauthorized
+            $body = $e->getResponse()?->getBody()?->getContents();
+            throw new \RuntimeException("Client error ({$e->getCode()}): " . $e->getMessage() . "\nResponse: $body", 0, $e);
+        } catch (RequestException $e) {
+            // Bắt lỗi 5xx hoặc lỗi kết nối
+            $body = $e->getResponse()?->getBody()?->getContents();
+            throw new \RuntimeException("Request error ({$e->getCode()}): " . $e->getMessage() . "\nResponse: $body", 0, $e);
+        } catch (\Exception $e) {
+            // Lỗi không xác định
+            throw new \RuntimeException("Unexpected error: " . $e->getMessage(), 0, $e);
         }
     }
+
     /**
      * Summary of call
      * @param string $endpoint
@@ -55,12 +71,8 @@ class ApiClient
      */
     protected function call(string $endpoint, $method = "get", array $addonOptions = [])
     {
-        try {
-            $response = $this->raw($endpoint, $method, $addonOptions);
-            return json_decode($response->getBody()->getContents());
-        } catch (GuzzleException $e) {
-            throw new \RuntimeException('API request failed: ' . $e->getMessage(), $e->getCode(), $e);
-        }
+        $response = $this->raw($endpoint, $method, $addonOptions);
+        return json_decode($response->getBody()->getContents());
     }
 
 

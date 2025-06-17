@@ -2,6 +2,7 @@
   position: relative; /* Rất cần cho spinner bám vào */
 }
 #tino-container #spinnerDivCenter {
+  display: none;
   position: absolute;
   justify-content: center;
   align-items: center;
@@ -12,7 +13,10 @@
   height: 64px;
   z-index: 100 !important;
 }
-#tino-container #spinner.active {
+#tino-container #spinnerDivCenter.active {
+  display: block;
+}
+#tino-container #spinnerDivCenter.active #spinner {
   position: absolute;
   border: 10px solid #f3f3f3;
   border-top: 10px solid #00be00;

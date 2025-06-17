@@ -1,9 +1,9 @@
 <?php
 $data->location = new stdClass;
-$data->location->district_list = ["Đà Nẵng", "Hồ Chí Minh", "Hà Nội"];
 $data->location->countries_list = ["Việt Nam"];
+$data->location->district_list = ["Sơn Trà", "Thuận Hoá", "Ngũ Hành Sơn"];
 $data->location->ward_list = ["Phú Thượng", "Hoà Hải", "Mỹ An"];
-$data->location->state_list = ["Sơn Trà", "Thuận Hoá", "Ngũ Hành Sơn"];
+$data->location->state_list = ["Huế", "Đà Nẵng", "Hồ Chí Minh", "Hà Nội"];
 ?>
 
 <div id="tino-container">
@@ -12,8 +12,8 @@ $data->location->state_list = ["Sơn Trà", "Thuận Hoá", "Ngũ Hành Sơn"];
     </div>
 
     <!-- start: ajax html replacer -->
-    <div id="ajaxHtmlReplacer">
-        <div class="uiBlock contactForm" style=" flex-direction: column; gap: 10px; width: 100%">
+    <div id="ajaxHtmlReplacer" style="max-width: 1140px; margin: auto">
+        <div class="uiBlock contactForm" style=" flex-direction: column; gap: 10px; width: 1140px">
             <h2>Đặt mua tên miền</h2>
 
             <label> Tóm tắt thông tin đơn hàng</label>
@@ -36,13 +36,13 @@ $data->location->state_list = ["Sơn Trà", "Thuận Hoá", "Ngũ Hành Sơn"];
 
             <label><strong>Thông tin chủ sở hữu tên miền</strong></label>
 
-            <div style="display: flex; gap: 20px">
-                <div>
+            <div style="display: flex; gap: 20px; width: 100%">
+                <div style="width: 100%">
                     <label style="display: flex; text-align: right; justify-content: start;">Họ và tên lót *</label>
                     <input type="text" class="formInput" id="customerFirstname" placeholder="Trần Đỗ Văn..." required />
                     <small><i>Vui lòng nhập đúng theo CCCD, vd: Trần Đỗ Văn Anh nhập "Trần Đỗ Văn"</i></small>
                 </div>
-                <div>
+                <div style="width: 100%">
                     <label style="display: flex; text-align: right; justify-content: start;">Tên *</label>
                     <input type="text" class="formInput" id="customerLastname" placeholder="Anh..." required />
                     <small><i>Vui lòng nhập đúng theo CCCD, vd: Trần Đỗ Văn Anh nhập "Anh"</i></small>
@@ -58,7 +58,7 @@ $data->location->state_list = ["Sơn Trà", "Thuận Hoá", "Ngũ Hành Sơn"];
 
             <label>Giới tính *</label>
             <div style="display: flex; gap: 20px">
-                <label><input type="radio" class="formInput" name="customerGender" value="male" required checked/></label> <label>Nam</label></span>
+                <label><input type="radio" class="formInput" name="customerGender" value="male" required checked /></label> <label>Nam</label></span>
                 <label><input type="radio" class="formInput" name="customerGender" value="female" required /> </label><label>Nữ</label></span>
             </div>
 
