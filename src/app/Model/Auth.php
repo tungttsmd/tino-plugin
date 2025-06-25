@@ -4,8 +4,11 @@ namespace Model;
 
 use Exception;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Helper\Session;
+use Repository\ApiClient;
 use RuntimeException;
 
 class Auth
@@ -33,7 +36,7 @@ class Auth
     {
         $this->username = $username;
         $this->password = $password;
-        $this->baseUri = "https://my.tino.vn/api/";
+        $this->baseUri = ApiClient::staticBaseUri();
         $this->sslVerify = false;
         $this->client = new GuzzleClient([
             "verify" => $this->sslVerify,
@@ -60,19 +63,31 @@ class Auth
                 // 0. Tái sử dụng dữ liệu xác thực từ SESSION
                 $this->response = session_get("tino_authentication");
             } else {
-                // 1. Dùng Tino API Endpoint Login để Xác thực
-                $endpoint = "login";
-                $response = $this->client->post($endpoint, [
-                    "form_params" => [
-                        "username" => $this->username,
-                        "password" => $this->password,
-                    ]
-                ]);
-                // 2. Lưu dữ liệu đăng nhập
-                $json = $response->getBody()->getContents();
-                $this->response = json_decode($json);
-                session_set("tino_authentication", $this->response);
-                session_set("tino_authentication_expired_time", time() + 5 * 60); // 5 phút mới lấy token mới -> tránh spam token
+                // 0. Auth là phương thức cần tự nó xác thực, nên không kế thừa được, gọi apiclient trực tiếp
+                try {
+                    $response = $this->client->request(strtoupper("post"), ApiClient::staticBaseUri() . "login", [
+                        "form_params" => [
+                            "username" => $this->username,
+                            "password" => $this->password,
+                        ]
+                    ]);
+                    // 2. Lưu dữ liệu đăng nhập
+                    $json = $response->getBody()->getContents();
+                    $this->response = json_decode($json);
+                    session_set("tino_authentication", $this->response);
+                    session_set("tino_authentication_expired_time", time() + 5 * 60); // 5 phút mới lấy token mới -> tránh spam token
+                } catch (ClientException $e) {
+                    // Bắt lỗi 4xx như 401 Unauthorized
+                    $body = $e->getResponse()?->getBody()?->getContents();
+                    throw new RuntimeException("Client error ({$e->getCode()}): " . $e->getMessage() . "\nResponse: $body", 0, $e);
+                } catch (RequestException $e) {
+                    // Bắt lỗi 5xx hoặc lỗi kết nối
+                    $body = $e->getResponse()?->getBody()?->getContents();
+                    throw new RuntimeException("Request error ({$e->getCode()}): " . $e->getMessage() . "\nResponse: $body", 0, $e);
+                } catch (Exception $e) {
+                    // Lỗi không xác định
+                    throw new RuntimeException("Unexpected error: " . $e->getMessage(), 0, $e);
+                }
             }
         } catch (GuzzleException $e) {
             // 3. Ném lỗi trong quá trình xác thực

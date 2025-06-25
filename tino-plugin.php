@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Tino plugin
  * Description: Dùng shortcode [webo_bang_gia] để lấy bảng giá tên miền; [webo_dang_ky] để lấy form đăng ký tên miền
- * Version: 1.3.3
+ * Version: 2.0.5
  * Author: Trần Thanh Tùng
  * Config: Cấu hình Đăng nhập, Nameserver và chiều cao của Bảng giá ở file config.php
  * Vesion log: chi tiết cập nhật tại file version_log.txt

@@ -4,7 +4,6 @@ namespace Service;
 
 use Helper\Maker;
 use Model\Domain;
-use Model\DummyAPI;
 use Model\Order;
 
 class OrderService

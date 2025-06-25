@@ -14,6 +14,13 @@ class ApiClient
     private $accessToken;
     private $configs;
     private $client;
+    public static $staticBaseUri = 'https://api.tino.vn/';
+
+    // Static
+    public static function staticBaseUri()
+    {
+        return self::$staticBaseUri;
+    }
 
     // Constructor
     public function __construct($accessToken)
@@ -23,7 +30,7 @@ class ApiClient
         } else {
             $this->accessToken = $accessToken;
         }
-        $this->baseUri = "https://my.tino.vn/api/";
+        $this->baseUri = self::$staticBaseUri;
         $this->sslVerify = false;
         $this->configs = [
             "verify" => $this->sslVerify,
@@ -69,7 +76,7 @@ class ApiClient
      * @throws \RuntimeException
      * call() là một chức năng phát triển dựa trên raw chỉ trả về dữ liệu được làm sạch
      */
-    protected function call(string $endpoint, $method = "get", array $addonOptions = [])
+    public function call(string $endpoint, $method = "get", array $addonOptions = [])
     {
         $response = $this->raw($endpoint, $method, $addonOptions);
         return json_decode($response->getBody()->getContents());
@@ -77,10 +84,6 @@ class ApiClient
 
 
     // Get
-    protected function baseUri()
-    {
-        return $this->baseUri;
-    }
     protected function sslVerify()
     {
         return $this->sslVerify;
